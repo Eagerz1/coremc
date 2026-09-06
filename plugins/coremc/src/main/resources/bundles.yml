@@ -1,0 +1,33 @@
+# Bundles — groups of rewards sold together.
+# contents lines support prefixes:
+#   key:<id>        give a crate key
+#   credits:<amt>   give Credits
+#   cmd:<command>   run a command ({player} substituted)
+#   item:MATERIAL:amount  give an item
+bundles:
+  starter:
+    display-name: "Starter Bundle"
+    price: 20
+    item-model: "coremc:starter_bundle"
+    contents:
+      - "key:sky"
+      - "credits:500"
+      - "item:DIAMOND:5"
+      - "cmd:give {player} diamond 5"
+  mining:
+    display-name: "Mining Bundle"
+    price: 150
+    item-model: "coremc:mining_bundle"
+    contents:
+      - "key:nether"
+      - "credits:2000"
+      - "item:NETHERITE_PICKAXE:1"
+      - "cmd:lp user {player} parent add miningbooster"
+  progression:
+    display-name: "Progression Bundle"
+    price: 300
+    item-model: "coremc:progression_bundle"
+    contents:
+      - "key:mythic"
+      - "credits:5000"
+      - "cmd:eco give {player} 50000"

@@ -1,0 +1,1 @@
+{"name":"CoreMC","version":"1.0.0","author":"Eagerz1","description":"Custom CoreMC panel egg","features":{"install":true,"startup":{"command":"java -jar coremc.jar nogui","user":"minecraft"}},"variables":{"SERVER_JAR":"coremc.jar","VERSION":"latest"}}

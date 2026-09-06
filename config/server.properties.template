@@ -1,0 +1,9 @@
+# CoreMC server.properties — FILL FROM EXTERNAL CONFIG (no secrets)
+server-port=25565
+online-mode=true
+max-players=50
+level-name=world
+motd=A CoreMC Server
+spawn-protection=16
+difficulty=normal
+network-compression-threshold=256

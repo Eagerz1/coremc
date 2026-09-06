@@ -1,0 +1,875 @@
+# ===========================================================================
+# skyblock-progression - upgrade trees
+# ===========================================================================
+# token-rates / xp-rates / role-level-xp / island-level-xp live in config.yml.
+# This file defines the six upgrade trees and their nodes only.
+#
+#
+
+# Each tree has nodes with: name, cost (per level), max-level, requires (node ids),
+# effect (integration key), description. Costs escalate; total per activity tree ~5M.
+trees:
+  mining:
+    name: "Mining"
+    type: activity
+    nodes:
+      efficient_miner:
+        name: "Efficient Miner"
+        cost: 1000
+        max-level: 5
+        requires: []
+        effect: "mining_speed"
+        description: "Mine faster with your tools."
+      fortune:
+        name: "Fortune"
+        cost: 5000
+        max-level: 5
+        requires: [efficient_miner]
+        effect: "mining_fortune"
+        description: "Increases ore fortune."
+      token_finder:
+        name: "Token Finder"
+        cost: 3000
+        max-level: 5
+        requires: [efficient_miner]
+        effect: "token_mult"
+        description: "More Sky Tokens from mining."
+      mining_xp:
+        name: "Mining XP"
+        cost: 2000
+        max-level: 5
+        requires: [efficient_miner]
+        effect: "role_xp"
+        description: "Bonus role XP from mining."
+      ore_finder:
+        name: "Ore Finder"
+        cost: 15000
+        max-level: 5
+        requires: [fortune]
+        effect: "ore_finder"
+        description: "Higher chance to find rare ores."
+      coal_fortune:
+        name: "Coal Fortune"
+        cost: 25000
+        max-level: 5
+        requires: [fortune]
+        effect: "coal_fortune"
+        description: "Better coal drops."
+      iron_fortune:
+        name: "Iron Fortune"
+        cost: 40000
+        max-level: 5
+        requires: [coal_fortune]
+        effect: "iron_fortune"
+        description: "Better iron drops."
+      gold_fortune:
+        name: "Gold Fortune"
+        cost: 60000
+        max-level: 5
+        requires: [iron_fortune]
+        effect: "gold_fortune"
+        description: "Better gold drops."
+      diamond_fortune:
+        name: "Diamond Fortune"
+        cost: 120000
+        max-level: 5
+        requires: [gold_fortune]
+        effect: "diamond_fortune"
+        description: "Better diamond drops."
+      emerald_fortune:
+        name: "Emerald Fortune"
+        cost: 180000
+        max-level: 5
+        requires: [diamond_fortune]
+        effect: "emerald_fortune"
+        description: "Better emerald drops."
+      ancient_debris_fortune:
+        name: "Ancient Debris Fortune"
+        cost: 300000
+        max-level: 5
+        requires: [diamond_fortune]
+        effect: "debris_fortune"
+        description: "Better ancient debris drops."
+      block_break_speed:
+        name: "Block Break Speed"
+        cost: 8000
+        max-level: 5
+        requires: [efficient_miner]
+        effect: "break_speed"
+        description: "Break blocks even faster."
+      double_ores:
+        name: "Double Ores"
+        cost: 90000
+        max-level: 3
+        requires: [ore_finder]
+        effect: "double_ores"
+        description: "Chance to double ore drops."
+      triple_ores:
+        name: "Triple Ores"
+        cost: 250000
+        max-level: 3
+        requires: [double_ores]
+        effect: "triple_ores"
+        description: "Chance to triple ore drops."
+      rare_ore_chance:
+        name: "Rare Ore Chance"
+        cost: 120000
+        max-level: 5
+        requires: [ore_finder]
+        effect: "rare_ore"
+        description: "More rare ore spawns."
+      token_multiplier:
+        name: "Token Multiplier"
+        cost: 200000
+        max-level: 5
+        requires: [token_finder]
+        effect: "token_mult2"
+        description: "Big multiplier on mining tokens."
+      mining_money:
+        name: "Mining Money"
+        cost: 50000
+        max-level: 5
+        requires: [efficient_miner]
+        effect: "mining_money"
+        description: "Earn money from mining."
+      mining_streak:
+        name: "Mining Streak"
+        cost: 150000
+        max-level: 5
+        requires: [mining_xp]
+        effect: "streak"
+        description: "Streak bonus on continuous mining."
+      jackpot_ore:
+        name: "Jackpot Ore"
+        cost: 500000
+        max-level: 3
+        requires: [triple_ores, rare_ore_chance]
+        effect: "jackpot"
+        description: "Rare jackpot ore drops."
+      master_miner:
+        name: "Master Miner"
+        cost: 750000
+        max-level: 1
+        requires: [jackpot_ore, ancient_debris_fortune, token_multiplier]
+        effect: "master"
+        description: "Master-tier mining perks."
+  farming:
+    name: "Farming"
+    type: activity
+    nodes:
+      faster_crops:
+        name: "Faster Crops"
+        cost: 1000
+        max-level: 5
+        requires: []
+        effect: "crop_speed"
+        description: "Crops grow faster."
+      crop_fortune:
+        name: "Crop Fortune"
+        cost: 5000
+        max-level: 5
+        requires: [faster_crops]
+        effect: "crop_fortune"
+        description: "Better crop yields."
+      crop_xp:
+        name: "Crop XP"
+        cost: 2000
+        max-level: 5
+        requires: [faster_crops]
+        effect: "role_xp"
+        description: "Bonus role XP from farming."
+      crop_tokens:
+        name: "Crop Tokens"
+        cost: 3000
+        max-level: 5
+        requires: [faster_crops]
+        effect: "token_mult"
+        description: "More tokens from farming."
+      wheat_fortune:
+        name: "Wheat Fortune"
+        cost: 25000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "wheat_fortune"
+        description: "Better wheat yields."
+      carrot_fortune:
+        name: "Carrot Fortune"
+        cost: 30000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "carrot_fortune"
+        description: "Better carrot yields."
+      potato_fortune:
+        name: "Potato Fortune"
+        cost: 35000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "potato_fortune"
+        description: "Better potato yields."
+      beetroot_fortune:
+        name: "Beetroot Fortune"
+        cost: 40000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "beetroot_fortune"
+        description: "Better beetroot yields."
+      melon_fortune:
+        name: "Melon Fortune"
+        cost: 70000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "melon_fortune"
+        description: "Better melon yields."
+      pumpkin_fortune:
+        name: "Pumpkin Fortune"
+        cost: 80000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "pumpkin_fortune"
+        description: "Better pumpkin yields."
+      sugar_cane_fortune:
+        name: "Sugar Cane Fortune"
+        cost: 90000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "sugarcane_fortune"
+        description: "Better sugar cane yields."
+      cactus_fortune:
+        name: "Cactus Fortune"
+        cost: 95000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "cactus_fortune"
+        description: "Better cactus yields."
+      crop_regrowth:
+        name: "Crop Regrowth"
+        cost: 120000
+        max-level: 5
+        requires: [crop_fortune]
+        effect: "crop_regrowth"
+        description: "Harvested crops regrow faster."
+      double_crops:
+        name: "Double Crops"
+        cost: 120000
+        max-level: 3
+        requires: [crop_regrowth]
+        effect: "double_crops"
+        description: "Chance to double crop drops."
+      triple_crops:
+        name: "Triple Crops"
+        cost: 280000
+        max-level: 3
+        requires: [double_crops]
+        effect: "triple_crops"
+        description: "Chance to triple crop drops."
+      farming_money:
+        name: "Farming Money"
+        cost: 50000
+        max-level: 5
+        requires: [faster_crops]
+        effect: "farming_money"
+        description: "Earn money from farming."
+      rare_crop_chance:
+        name: "Rare Crop Chance"
+        cost: 140000
+        max-level: 5
+        requires: [crop_regrowth]
+        effect: "rare_crop"
+        description: "More rare crop drops."
+      token_multiplier:
+        name: "Token Multiplier"
+        cost: 200000
+        max-level: 5
+        requires: [crop_tokens]
+        effect: "token_mult2"
+        description: "Big multiplier on farming tokens."
+      harvest_streak:
+        name: "Harvest Streak"
+        cost: 150000
+        max-level: 5
+        requires: [crop_xp]
+        effect: "streak"
+        description: "Streak bonus on continuous farming."
+      master_farmer:
+        name: "Master Farmer"
+        cost: 750000
+        max-level: 1
+        requires: [triple_crops, rare_crop_chance, token_multiplier]
+        effect: "master"
+        description: "Master-tier farming perks."
+  fishing:
+    name: "Fishing"
+    type: activity
+    nodes:
+      fishing_speed:
+        name: "Fishing Speed"
+        cost: 1000
+        max-level: 5
+        requires: []
+        effect: "fish_speed"
+        description: "Reel in faster."
+      fishing_xp:
+        name: "Fishing XP"
+        cost: 2000
+        max-level: 5
+        requires: [fishing_speed]
+        effect: "role_xp"
+        description: "Bonus role XP from fishing."
+      token_chance:
+        name: "Token Chance"
+        cost: 3000
+        max-level: 5
+        requires: [fishing_speed]
+        effect: "token_mult"
+        description: "More tokens from fishing."
+      money_chance:
+        name: "Money Chance"
+        cost: 4000
+        max-level: 5
+        requires: [fishing_speed]
+        effect: "fish_money"
+        description: "More money from fishing."
+      treasure_chance:
+        name: "Treasure Chance"
+        cost: 15000
+        max-level: 5
+        requires: [money_chance]
+        effect: "treasure_chance"
+        description: "Higher treasure catch rate."
+      common_catch:
+        name: "Common Catch"
+        cost: 20000
+        max-level: 5
+        requires: [treasure_chance]
+        effect: "common_catch"
+        description: "Better common loot."
+      uncommon_catch:
+        name: "Uncommon Catch"
+        cost: 35000
+        max-level: 5
+        requires: [common_catch]
+        effect: "uncommon_catch"
+        description: "Better uncommon loot."
+      rare_catch:
+        name: "Rare Catch"
+        cost: 60000
+        max-level: 5
+        requires: [uncommon_catch]
+        effect: "rare_catch"
+        description: "Better rare loot."
+      epic_catch:
+        name: "Epic Catch"
+        cost: 110000
+        max-level: 5
+        requires: [rare_catch]
+        effect: "epic_catch"
+        description: "Better epic loot."
+      legendary_catch:
+        name: "Legendary Catch"
+        cost: 180000
+        max-level: 5
+        requires: [epic_catch]
+        effect: "legendary_catch"
+        description: "Better legendary loot."
+      double_catch:
+        name: "Double Catch"
+        cost: 90000
+        max-level: 3
+        requires: [rare_catch]
+        effect: "double_catch"
+        description: "Chance to double catches."
+      triple_catch:
+        name: "Triple Catch"
+        cost: 250000
+        max-level: 3
+        requires: [double_catch]
+        effect: "triple_catch"
+        description: "Chance to triple catches."
+      rare_fish_chance:
+        name: "Rare Fish Chance"
+        cost: 120000
+        max-level: 5
+        requires: [rare_catch]
+        effect: "rare_fish"
+        description: "More rare fish spawns."
+      treasure_quality:
+        name: "Treasure Quality"
+        cost: 130000
+        max-level: 5
+        requires: [treasure_chance]
+        effect: "treasure_quality"
+        description: "Higher treasure quality."
+      fishing_money:
+        name: "Fishing Money"
+        cost: 60000
+        max-level: 5
+        requires: [fishing_speed]
+        effect: "fish_money2"
+        description: "Earn money from fishing."
+      fishing_tokens:
+        name: "Fishing Tokens"
+        cost: 70000
+        max-level: 5
+        requires: [token_chance]
+        effect: "token_mult2"
+        description: "More fishing tokens."
+      fishing_streak:
+        name: "Fishing Streak"
+        cost: 150000
+        max-level: 5
+        requires: [fishing_xp]
+        effect: "streak"
+        description: "Streak bonus on continuous fishing."
+      sea_treasure:
+        name: "Sea Treasure"
+        cost: 220000
+        max-level: 5
+        requires: [treasure_quality]
+        effect: "sea_treasure"
+        description: "Deep-sea treasure finds."
+      legendary_chance:
+        name: "Legendary Chance"
+        cost: 300000
+        max-level: 5
+        requires: [legendary_catch]
+        effect: "legendary_chance"
+        description: "Higher legendary odds."
+      master_angler:
+        name: "Master Angler"
+        cost: 750000
+        max-level: 1
+        requires: [triple_catch, legendary_chance, fishing_tokens]
+        effect: "master"
+        description: "Master-tier fishing perks."
+  slaying:
+    name: "Slaying"
+    type: activity
+    nodes:
+      mob_damage:
+        name: "Mob Damage"
+        cost: 1000
+        max-level: 5
+        requires: []
+        effect: "mob_damage"
+        description: "Deal more damage to mobs."
+      mob_xp:
+        name: "Mob XP"
+        cost: 2000
+        max-level: 5
+        requires: [mob_damage]
+        effect: "role_xp"
+        description: "Bonus role XP from slaying."
+      mob_money:
+        name: "Mob Money"
+        cost: 4000
+        max-level: 5
+        requires: [mob_damage]
+        effect: "mob_money"
+        description: "Earn money from kills."
+      mob_tokens:
+        name: "Mob Tokens"
+        cost: 3000
+        max-level: 5
+        requires: [mob_damage]
+        effect: "token_mult"
+        description: "More tokens from slaying."
+      looting:
+        name: "Looting"
+        cost: 15000
+        max-level: 5
+        requires: [mob_damage]
+        effect: "looting"
+        description: "Better mob drops."
+      double_drops:
+        name: "Double Drops"
+        cost: 90000
+        max-level: 3
+        requires: [looting]
+        effect: "double_drops"
+        description: "Chance to double mob drops."
+      zombie_fortune:
+        name: "Zombie Fortune"
+        cost: 25000
+        max-level: 5
+        requires: [looting]
+        effect: "zombie_fortune"
+        description: "Better zombie drops."
+      skeleton_fortune:
+        name: "Skeleton Fortune"
+        cost: 30000
+        max-level: 5
+        requires: [looting]
+        effect: "skeleton_fortune"
+        description: "Better skeleton drops."
+      spider_fortune:
+        name: "Spider Fortune"
+        cost: 35000
+        max-level: 5
+        requires: [looting]
+        effect: "spider_fortune"
+        description: "Better spider drops."
+      creeper_fortune:
+        name: "Creeper Fortune"
+        cost: 45000
+        max-level: 5
+        requires: [looting]
+        effect: "creeper_fortune"
+        description: "Better creeper drops."
+      enderman_fortune:
+        name: "Enderman Fortune"
+        cost: 70000
+        max-level: 5
+        requires: [skeleton_fortune]
+        effect: "enderman_fortune"
+        description: "Better enderman drops."
+      blaze_fortune:
+        name: "Blaze Fortune"
+        cost: 80000
+        max-level: 5
+        requires: [skeleton_fortune]
+        effect: "blaze_fortune"
+        description: "Better blaze drops."
+      rare_drop_chance:
+        name: "Rare Drop Chance"
+        cost: 120000
+        max-level: 5
+        requires: [looting]
+        effect: "rare_drop"
+        description: "More rare drops."
+      double_mob_drops:
+        name: "Double Mob Drops"
+        cost: 150000
+        max-level: 3
+        requires: [double_drops]
+        effect: "double_mob"
+        description: "Chance to double all mob drops."
+      triple_mob_drops:
+        name: "Triple Mob Drops"
+        cost: 320000
+        max-level: 3
+        requires: [double_mob_drops]
+        effect: "triple_mob"
+        description: "Chance to triple all mob drops."
+      kill_streak:
+        name: "Kill Streak"
+        cost: 150000
+        max-level: 5
+        requires: [mob_xp]
+        effect: "streak"
+        description: "Streak bonus on continuous kills."
+      token_multiplier:
+        name: "Token Multiplier"
+        cost: 200000
+        max-level: 5
+        requires: [mob_tokens]
+        effect: "token_mult2"
+        description: "Big multiplier on slaying tokens."
+      money_multiplier:
+        name: "Money Multiplier"
+        cost: 220000
+        max-level: 5
+        requires: [mob_money]
+        effect: "money_mult"
+        description: "Big multiplier on kill money."
+      elite_mob_chance:
+        name: "Elite Mob Chance"
+        cost: 300000
+        max-level: 5
+        requires: [triple_mob_drops]
+        effect: "elite_mob"
+        description: "Spawn elite mobs."
+      master_slayer:
+        name: "Master Slayer"
+        cost: 750000
+        max-level: 1
+        requires: [elite_mob_chance, token_multiplier, money_multiplier]
+        effect: "master"
+        description: "Master-tier slaying perks."
+  logging:
+    name: "Logging"
+    type: activity
+    nodes:
+      logging_speed:
+        name: "Logging Speed"
+        cost: 1000
+        max-level: 5
+        requires: []
+        effect: "log_speed"
+        description: "Chop faster."
+      logging_xp:
+        name: "Logging XP"
+        cost: 2000
+        max-level: 5
+        requires: [logging_speed]
+        effect: "role_xp"
+        description: "Bonus role XP from logging."
+      token_chance:
+        name: "Token Chance"
+        cost: 3000
+        max-level: 5
+        requires: [logging_speed]
+        effect: "token_mult"
+        description: "More tokens from logging."
+      money_chance:
+        name: "Money Chance"
+        cost: 4000
+        max-level: 5
+        requires: [logging_speed]
+        effect: "log_money"
+        description: "Earn money from logs."
+      double_logs:
+        name: "Double Logs"
+        cost: 90000
+        max-level: 3
+        requires: [token_chance]
+        effect: "double_logs"
+        description: "Chance to double logs."
+      triple_logs:
+        name: "Triple Logs"
+        cost: 250000
+        max-level: 3
+        requires: [double_logs]
+        effect: "triple_logs"
+        description: "Chance to triple logs."
+      oak_fortune:
+        name: "Oak Fortune"
+        cost: 25000
+        max-level: 5
+        requires: [logging_speed]
+        effect: "oak_fortune"
+        description: "Better oak yields."
+      spruce_fortune:
+        name: "Spruce Fortune"
+        cost: 30000
+        max-level: 5
+        requires: [logging_speed]
+        effect: "spruce_fortune"
+        description: "Better spruce yields."
+      birch_fortune:
+        name: "Birch Fortune"
+        cost: 35000
+        max-level: 5
+        requires: [logging_speed]
+        effect: "birch_fortune"
+        description: "Better birch yields."
+      jungle_fortune:
+        name: "Jungle Fortune"
+        cost: 45000
+        max-level: 5
+        requires: [oak_fortune]
+        effect: "jungle_fortune"
+        description: "Better jungle yields."
+      acacia_fortune:
+        name: "Acacia Fortune"
+        cost: 50000
+        max-level: 5
+        requires: [oak_fortune]
+        effect: "acacia_fortune"
+        description: "Better acacia yields."
+      dark_oak_fortune:
+        name: "Dark Oak Fortune"
+        cost: 60000
+        max-level: 5
+        requires: [jungle_fortune]
+        effect: "darkoak_fortune"
+        description: "Better dark oak yields."
+      mangrove_fortune:
+        name: "Mangrove Fortune"
+        cost: 70000
+        max-level: 5
+        requires: [jungle_fortune]
+        effect: "mangrove_fortune"
+        description: "Better mangrove yields."
+      cherry_fortune:
+        name: "Cherry Fortune"
+        cost: 80000
+        max-level: 5
+        requires: [acacia_fortune]
+        effect: "cherry_fortune"
+        description: "Better cherry yields."
+      rare_log_chance:
+        name: "Rare Log Chance"
+        cost: 120000
+        max-level: 5
+        requires: [oak_fortune]
+        effect: "rare_log"
+        description: "More rare logs."
+      logging_money:
+        name: "Logging Money"
+        cost: 60000
+        max-level: 5
+        requires: [logging_speed]
+        effect: "log_money2"
+        description: "Earn money from logging."
+      logging_tokens:
+        name: "Logging Tokens"
+        cost: 70000
+        max-level: 5
+        requires: [token_chance]
+        effect: "token_mult2"
+        description: "More logging tokens."
+      log_regrowth:
+        name: "Log Regrowth"
+        cost: 140000
+        max-level: 5
+        requires: [rare_log_chance]
+        effect: "log_regrowth"
+        description: "Broken trees regrow."
+      logging_streak:
+        name: "Logging Streak"
+        cost: 150000
+        max-level: 5
+        requires: [logging_xp]
+        effect: "streak"
+        description: "Streak bonus on continuous logging."
+      master_lumberjack:
+        name: "Master Lumberjack"
+        cost: 750000
+        max-level: 1
+        requires: [triple_logs, cherry_fortune, logging_tokens]
+        effect: "master"
+        description: "Master-tier logging perks."
+  island:
+    name: "Island"
+    type: island
+    nodes:
+      member_limit_1:
+        name: "Member Limit I"
+        cost: 5000
+        max-level: 1
+        requires: []
+        effect: "member_limit"
+        description: "+1 island member."
+      member_limit_2:
+        name: "Member Limit II"
+        cost: 20000
+        max-level: 1
+        requires: [member_limit_1]
+        effect: "member_limit"
+        description: "+1 island member."
+      member_limit_3:
+        name: "Member Limit III"
+        cost: 60000
+        max-level: 1
+        requires: [member_limit_2]
+        effect: "member_limit"
+        description: "+1 island member."
+      member_limit_4:
+        name: "Member Limit IV"
+        cost: 150000
+        max-level: 1
+        requires: [member_limit_3]
+        effect: "member_limit"
+        description: "+1 island member."
+      member_limit_5:
+        name: "Member Limit V"
+        cost: 350000
+        max-level: 1
+        requires: [member_limit_4]
+        effect: "member_limit"
+        description: "+1 island member."
+      island_size_1:
+        name: "Island Size I"
+        cost: 10000
+        max-level: 1
+        requires: []
+        effect: "island_size"
+        description: "+10 island radius."
+      island_size_2:
+        name: "Island Size II"
+        cost: 40000
+        max-level: 1
+        requires: [island_size_1]
+        effect: "island_size"
+        description: "+10 island radius."
+      island_size_3:
+        name: "Island Size III"
+        cost: 120000
+        max-level: 1
+        requires: [island_size_2]
+        effect: "island_size"
+        description: "+10 island radius."
+      island_size_4:
+        name: "Island Size IV"
+        cost: 300000
+        max-level: 1
+        requires: [island_size_3]
+        effect: "island_size"
+        description: "+10 island radius."
+      island_size_5:
+        name: "Island Size V"
+        cost: 600000
+        max-level: 1
+        requires: [island_size_4]
+        effect: "island_size"
+        description: "+10 island radius."
+      crop_regrowth_1:
+        name: "Crop Regrowth I"
+        cost: 15000
+        max-level: 1
+        requires: []
+        effect: "crop_regrowth"
+        description: "Island crop regrowth."
+      crop_regrowth_2:
+        name: "Crop Regrowth II"
+        cost: 50000
+        max-level: 1
+        requires: [crop_regrowth_1]
+        effect: "crop_regrowth"
+        description: "Better regrowth."
+      crop_regrowth_3:
+        name: "Crop Regrowth III"
+        cost: 120000
+        max-level: 1
+        requires: [crop_regrowth_2]
+        effect: "crop_regrowth"
+        description: "Better regrowth."
+      crop_regrowth_4:
+        name: "Crop Regrowth IV"
+        cost: 280000
+        max-level: 1
+        requires: [crop_regrowth_3]
+        effect: "crop_regrowth"
+        description: "Better regrowth."
+      crop_regrowth_5:
+        name: "Crop Regrowth V"
+        cost: 550000
+        max-level: 1
+        requires: [crop_regrowth_4]
+        effect: "crop_regrowth"
+        description: "Max regrowth."
+      generator_limit:
+        name: "Generator Limit"
+        cost: 80000
+        max-level: 99
+        requires: []
+        effect: "generator_limit"
+        description: "+50 generators per level. Base 10, max 5000."
+      spawner_limit:
+        name: "Spawner Limit"
+        cost: 80000
+        max-level: 99
+        requires: []
+        effect: "spawner_limit"
+        description: "+50 spawners per level. Base 10, max 5000."
+      island_home:
+        name: "Island Home"
+        cost: 30000
+        max-level: 1
+        requires: []
+        effect: "island_home"
+        description: "Extra /is home point."
+      beacon:
+        name: "Beacon"
+        cost: 200000
+        max-level: 1
+        requires: []
+        effect: "beacon"
+        description: "Island-wide beacon."
+      beacon_power:
+        name: "Beacon Power"
+        cost: 500000
+        max-level: 1
+        requires: [beacon]
+        effect: "beacon_power"
+        description: "Stronger beacon effects."

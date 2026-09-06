@@ -1,0 +1,36 @@
+# Ranks — each rank shows its full perk list and runs configured commands on purchase.
+# dye: a Minecraft dye colour name (e.g. DIAMOND, RED, PURPLE) representing the rank colour.
+# perks: full list (every perk shown, not reduced to five). Long lists auto-paginate.
+# commands: executed as console on purchase ({player} substituted).
+ranks:
+  vip:
+    display-name: "VIP"
+    price: 15
+    dye: "DIAMOND"
+    perks:
+      - "2 extra homes"
+      - "Access to /feed"
+      - "Increased island member limit"
+      - "VIP chat colour"
+      - "Special kit"
+      - "Increased generator limit"
+      - "Increased spawner limit"
+      - "Priority queue"
+    commands:
+      - "lp user {player} parent set vip"
+  premium:
+    display-name: "Premium"
+    price: 40
+    dye: "GOLD"
+    perks:
+      - "5 extra homes"
+      - "Access to /feed and /fly"
+      - "Large island member limit"
+      - "Premium chat colour"
+      - "Exclusive kit"
+      - "Higher generator limit"
+      - "Higher spawner limit"
+      - "Monthly Credits stipend"
+      - "Priority queue"
+    commands:
+      - "lp user {player} parent set premium"

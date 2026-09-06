@@ -1,0 +1,101 @@
+# Keys — each key references a crate registered by the crate plugin.
+# crate: the crate id the key opens.
+# item-model: resource-pack model identifier.
+# color: MiniMessage hex colour for the key name.
+# description: short bullet points (kept brief).
+keys:
+  sky:
+    display-name: "Sky Key"
+    price: 100
+    crate: "sky"
+    item-model: "coremc:sky_key"
+    color: "#55ffff"
+    description:
+      - "Contains rare rewards"
+      - "Contains money"
+      - "Contains tokens"
+      - "Contains special items"
+      - "Contains jackpot rewards"
+  nether:
+    display-name: "Nether Key"
+    price: 250
+    crate: "nether"
+    item-model: "coremc:nether_key"
+    color: "#ff5555"
+    description:
+      - "Contains nether loot"
+      - "Contains money"
+      - "Contains tokens"
+      - "Contains rare gear"
+      - "Contains jackpot rewards"
+  mythic:
+    display-name: "Mythic Key"
+    price: 1000
+    crate: "mythic"
+    item-model: "coremc:mythic_key"
+    color: "#aa00ff"
+    description:
+      - "Contains mythic items"
+      - "Contains big money"
+      - "Contains Sky Tokens"
+      - "Contains exclusive cosmetics"
+      - "Contains jackpot rewards"
+  vote:
+    display-name: "Vote Key"
+    price: 50
+    crate: "vote"
+    item-model: "coremc:vote_key"
+    color: "#ffff55"
+    description:
+      - "Reward for voting"
+      - "Contains useful starter loot"
+      - "Contains Sky Tokens"
+  river:
+    display-name: "River Key"
+    price: 200
+    crate: "river"
+    item-model: "coremc:river_key"
+    color: "#00ffff"
+    description:
+      - "River-themed rewards"
+      - "Contains fishing loot"
+      - "Contains money"
+  boost:
+    display-name: "Boost Key"
+    price: 300
+    crate: "boost"
+    item-model: "coremc:boost_key"
+    color: "#ffaa00"
+    description:
+      - "Contains temporary boost tokens"
+      - "Contains rare loot"
+  crimson:
+    display-name: "Crimson Key"
+    price: 750
+    crate: "crimson"
+    item-model: "coremc:crimson_key"
+    color: "#aa0000"
+    description:
+      - "Crimson Isle rewards"
+      - "Contains high-tier gear"
+      - "Contains Sky Tokens"
+  event:
+    display-name: "Event Key"
+    price: 400
+    crate: "event"
+    item-model: "coremc:event_key"
+    color: "#ff55ff"
+    description:
+      - "General event rewards"
+      - "Rotates with live events"
+      - "Contains exclusive cosmetics"
+  autumn:
+    display-name: "Autumn Key"
+    price: 350
+    crate: "autumn"
+    item-model: "coremc:autumn_key"
+    color: "#d2691e"
+    description:
+      - "Seasonal autumn rewards"
+      - "Limited-time loot"
+      - "Contains themed cosmetics"

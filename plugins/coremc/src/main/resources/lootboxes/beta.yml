@@ -1,0 +1,336 @@
+# ===========================================================================
+# CoreMC — BETA LOOTBOX
+# ===========================================================================
+# Theme: CoreMC Beta / Founders.
+# Rewards communicate: "I was here during Beta."
+# Loaded by LootboxManager from lootboxes/beta.yml. No Java changes needed.
+# ===========================================================================
+
+display:
+  name: "BETA LOOTBOX"
+  description: "Exclusive Beta & Founders rewards."
+  icon-material: ENDER_CHEST
+  icon-colour: light_purple
+  theme: "beta"
+  custom-model-data: ""
+
+# Empty = available to everyone (no permission node required to open).
+permission: ""
+
+sounds:
+  open: "ENTITY_ENDER_CHEST_OPEN"
+  spin-start: "ENTITY_ITEM_PICKUP"
+  spin-loop: "BLOCK_AMBIENT_CRIMSON_FOREST_LOOP"
+  reveal: "UI_TOAST_CHALLENGE_COMPLETE"
+  legendary: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  mythic: "ENTITY_ENDER_DRAGON_DEATH"
+  lightning: "ENTITY_LIGHTNING_BOLT_THUNDER"
+
+particles:
+  type: "PORTAL"
+  colour: "#aa55ff"
+
+animation:
+  rise-ticks: 50
+  spin-ticks: 140
+  reward-appear-delay-ticks: 10
+  reward-appear-interval-ticks: 4
+  spin-slowdown-ticks: 50
+  reveal-pause-ticks: 30
+  rise-height: 2.2
+  particle-type: "PORTAL"
+  particle-colour: "#aa55ff"
+  sound-open: "ENTITY_ENDER_CHEST_OPEN"
+  sound-spin-start: "ENTITY_ITEM_PICKUP"
+  sound-spin-loop: "BLOCK_AMBIENT_CRIMSON_FOREST_LOOP"
+  sound-reveal: "UI_TOAST_CHALLENGE_COMPLETE"
+  sound-legendary: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  sound-mythic: "ENTITY_ENDER_DRAGON_DEATH"
+  lightning-enabled: true
+  lightning-strikes: 3
+  lightning-sound: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  screen-shake: true
+  play-sounds: true
+  stagger-delay-ticks: 1
+
+rewards:
+  # ---------------------------------------------------------------- COMMON
+  beta_credits_500:
+    type: credits
+    amount: 500
+    rarity: COMMON
+    chance: 20.0
+    display: "500 Credits"
+    description: "CoreMC store credit."
+    announce: false
+    rarity-colour: "white"
+  beta_tokens_100:
+    type: tokens
+    amount: 100
+    rarity: COMMON
+    chance: 20.0
+    display: "100 SkyTokens"
+    description: "Progression currency."
+    announce: false
+    rarity-colour: "white"
+  beta_key_1:
+    type: key
+    key: vote
+    amount: 1
+    rarity: COMMON
+    chance: 18.0
+    display: "1x Crate Key"
+    description: "A standard Vote Key."
+    announce: false
+    rarity-colour: "white"
+
+  # -------------------------------------------------------------- UNCOMMON
+  beta_credits_1000:
+    type: credits
+    amount: 1000
+    rarity: UNCOMMON
+    chance: 12.0
+    display: "1,000 Credits"
+    description: "CoreMC store credit."
+    announce: false
+    rarity-colour: "yellow"
+  beta_tokens_250:
+    type: tokens
+    amount: 250
+    rarity: UNCOMMON
+    chance: 11.0
+    display: "250 SkyTokens"
+    description: "Progression currency."
+    announce: false
+    rarity-colour: "yellow"
+  beta_key_3:
+    type: key
+    key: river
+    amount: 3
+    rarity: UNCOMMON
+    chance: 9.0
+    display: "3x Crate Keys"
+    description: "River Keys."
+    announce: false
+    rarity-colour: "yellow"
+
+  # ------------------------------------------------------------------ RARE
+  beta_credits_2500:
+    type: credits
+    amount: 2500
+    rarity: RARE
+    chance: 6.0
+    display: "2,500 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "aqua"
+  beta_tokens_500:
+    type: tokens
+    amount: 500
+    rarity: RARE
+    chance: 6.0
+    display: "500 SkyTokens"
+    description: "Progression currency."
+    announce: true
+    rarity-colour: "aqua"
+  beta_skin_beta_founder:
+    type: skin
+    skin: beta_founder
+    rarity: RARE
+    chance: 3.0
+    display: "Beta Founder Skin"
+    description: "Founders-era cosmetic skin."
+    announce: true
+    rarity-colour: "aqua"
+  beta_tag_beta:
+    type: tag
+    tag: BETA
+    rarity: RARE
+    chance: 3.0
+    display: "BETA Tag"
+    description: "Chat tag: [BETA]"
+    announce: true
+    rarity-colour: "aqua"
+  beta_gradient_beta_blue:
+    type: gradient
+    gradient: beta_blue
+    rarity: RARE
+    chance: 3.0
+    display: "Beta Blue Gradient"
+    description: "Chat gradient: Beta Blue."
+    announce: true
+    rarity-colour: "aqua"
+
+  # ------------------------------------------------------------------ EPIC
+  beta_credits_5000:
+    type: credits
+    amount: 5000
+    rarity: EPIC
+    chance: 2.5
+    display: "5,000 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "light_purple"
+  beta_tokens_1000:
+    type: tokens
+    amount: 1000
+    rarity: EPIC
+    chance: 2.5
+    display: "1,000 SkyTokens"
+    description: "Progression currency."
+    announce: true
+    rarity-colour: "light_purple"
+  beta_skin_beta_warrior:
+    type: skin
+    skin: beta_warrior
+    rarity: EPIC
+    chance: 1.5
+    display: "Beta Warrior Skin"
+    description: "Founders-era warrior skin."
+    announce: true
+    rarity-colour: "light_purple"
+  beta_tag_founder:
+    type: tag
+    tag: FOUNDER
+    rarity: EPIC
+    chance: 1.5
+    display: "FOUNDER Tag"
+    description: "Chat tag: [FOUNDER]"
+    announce: true
+    rarity-colour: "light_purple"
+  beta_gradient_founder_purple:
+    type: gradient
+    gradient: founder_purple
+    rarity: EPIC
+    chance: 1.5
+    display: "Founder Purple Gradient"
+    description: "Chat gradient: Founder Purple."
+    announce: true
+    rarity-colour: "light_purple"
+  beta_companion_mini_core:
+    type: companion
+    companion: mini_core
+    rarity: EPIC
+    chance: 1.0
+    display: "Mini Core"
+    description: "A tiny Core companion."
+    announce: true
+    rarity-colour: "light_purple"
+  beta_companion_beta_bot:
+    type: companion
+    companion: beta_bot
+    rarity: EPIC
+    chance: 1.0
+    display: "Beta Bot"
+    description: "A beta-era helper bot."
+    announce: true
+    rarity-colour: "light_purple"
+  beta_bundle_keys_credits:
+    type: bundle
+    rarity: EPIC
+    chance: 2.0
+    display: "Key & Credit Bundle"
+    description: "3x Crate Keys + 500 Credits."
+    announce: true
+    rarity-colour: "light_purple"
+    bundle:
+      - type: key
+        key: vote
+        amount: 3
+      - type: credits
+        amount: 500
+
+  # -------------------------------------------------------------- LEGENDARY
+  beta_credits_10000:
+    type: credits
+    amount: 10000
+    rarity: LEGENDARY
+    chance: 0.6
+    display: "10,000 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "gold"
+  beta_key_10:
+    type: key
+    key: crimson
+    amount: 10
+    rarity: LEGENDARY
+    chance: 0.6
+    display: "10x Crate Keys"
+    description: "Ten Crimson Keys."
+    announce: true
+    rarity-colour: "gold"
+  beta_skin_core_guardian:
+    type: skin
+    skin: core_guardian
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "Core Guardian Skin"
+    description: "A prestigious guardian skin."
+    announce: true
+    rarity-colour: "gold"
+  beta_tag_og:
+    type: tag
+    tag: OG
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "OG Tag"
+    description: "Chat tag: [OG]"
+    announce: true
+    rarity-colour: "gold"
+  beta_gradient_core_blue:
+    type: gradient
+    gradient: core_blue
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "Core Blue Gradient"
+    description: "Chat gradient: Core Blue."
+    announce: true
+    rarity-colour: "gold"
+  beta_companion_prototype:
+    type: companion
+    companion: prototype_companion
+    rarity: LEGENDARY
+    chance: 0.3
+    display: "Prototype"
+    description: "An early prototype companion."
+    announce: true
+    rarity-colour: "gold"
+
+  # ----------------------------------------------------------------- MYTHIC
+  beta_skin_exclusive:
+    type: skin
+    skin: beta_exclusive
+    rarity: MYTHIC
+    chance: 0.08
+    display: "Exclusive Beta Skin"
+    description: "Only obtainable from the Beta Lootbox."
+    announce: true
+    rarity-colour: "ff55ff"
+  beta_tag_exclusive:
+    type: tag
+    tag: TESTER
+    rarity: MYTHIC
+    chance: 0.08
+    display: "Beta Exclusive Tag"
+    description: "Chat tag: [TESTER] — beta tester prestige."
+    announce: true
+    rarity-colour: "ff55ff"
+  beta_gradient_exclusive:
+    type: gradient
+    gradient: prototype_cyan
+    rarity: MYTHIC
+    chance: 0.08
+    display: "Exclusive Beta Gradient"
+    description: "Prototype Cyan — beta-only gradient."
+    announce: true
+    rarity-colour: "ff55ff"
+  beta_companion_exclusive:
+    type: companion
+    companion: mini_founder
+    rarity: MYTHIC
+    chance: 0.06
+    display: "Beta Companion"
+    description: "Mini Founder — the rarest beta companion."
+    announce: true
+    rarity-colour: "ff55ff"

@@ -1,0 +1,2084 @@
+# ===========================================================================
+# CoreMC - consolidated configuration
+# ===========================================================================
+
+prefix: "<bold>COREMC</bold> <dark_gray>»</dark_gray> "
+
+messages:
+  reload: "<prefix> <green>Configuration reloaded."
+  no-permission: "<prefix> <red>You do not have permission to do that."
+  cooldown: "<prefix> <red>Please wait <time> before doing that again."
+  player-not-found: "<prefix> <red>Could not find that player."
+
+debug:
+  enabled: false
+
+gui:
+  default-title: "CoreMC"
+  filler-material: "BLACK_STAINED_GLASS_PANE"
+  filler-name: " "
+  close-on-filler-click: true
+
+# ---- skyblock-core ----
+island:
+  schematic-folder: "schematics"
+  default-biome: PLAINS
+
+# ---- skyblock-progression ----
+# token-rates / xp-rates: base amounts awarded per activity (before island buffs).
+token-rates:
+  mining: 5
+  farming: 3
+  fishing: 4
+  logging: 3
+  slaying: 2
+  gens: 2
+xp-rates:
+  mining: 5
+  farming: 4
+  fishing: 5
+  logging: 4
+  slaying: 4
+  gens: 3
+# role-level-xp: cumulative XP to reach each role level (index = level).
+# Level cap = list size - 1 (here 50). Edit to rebalance the whole season.
+# Progressively increasing curve so later levels take meaningfully more effort.
+role-level-xp: [0, 150, 400, 900, 1800, 3300, 5700, 9200, 14200, 21000, 30000, 42000, 58000, 78000, 103000, 134000, 172000, 218000, 273000, 339000, 418000, 510000, 619000, 747000, 897000, 1071000, 1273000, 1506000, 1774000, 2081000, 2431000, 2829000, 3280000, 3790000, 4365000, 5012000, 5738000, 6551000, 7459000, 8470000, 9593000, 10835000, 12208000, 13731000, 15408000, 17254000, 19284000, 21515000, 23964000, 26659000, 29620000]
+# island-level-xp: island shared XP -> island level.
+island-level-xp: [0, 500, 1500, 4000, 10000, 25000, 60000, 150000, 400000, 1000000]
+
+# ============================================================
+#  ROLE PROGRESSION SYSTEM
+#  Per-role XP, levels, perks, milestones and Core modifiers.
+#  Selection is untouched (RoleManager / RoleCommand). Progression
+#  lives in roles.yml. Everything here is data-driven: tune without
+#  touching Java.
+# ============================================================
+
+# Universal role earns a fraction of each supported activity instead of
+# full credit. Kept below 1.0 so it stays flexible but never strictly
+# better than a focused role.
+universal:
+  share:
+    xp: 0.40
+    tokens: 0.40
+    core: 0.40
+
+# Per-role perks. Each perk:
+#   id            unique
+#   role          owning role (MINING/FARMING/FISHING/LOGGING/SLAYING/UNIVERSAL)
+#   unlock-level  level at which the perk becomes active
+#   description   shown in the role GUI
+#   effect        how RoleModifiers interprets it (see RoleModifiers)
+#   values        effect-specific tuning
+# Add perks freely; no Java change required in the driver.
+role-perks:
+  MINING:
+    - id: mining_xp_1
+      role: MINING
+      unlock-level: 2
+      description: "<gray>+10% mining XP from all mining activity."
+      effect: xp_multiplier
+      values: { multiplier: 0.10 }
+    - id: mining_token_1
+      role: MINING
+      unlock-level: 5
+      description: "<gray>+10% Sky Tokens from mining."
+      effect: token_multiplier
+      values: { multiplier: 0.10 }
+    - id: mining_core_1
+      role: MINING
+      unlock-level: 10
+      description: "<gray>+5% Core contribution from mining."
+      effect: core_money_multiplier
+      values: { multiplier: 0.05 }
+    - id: mining_drop_1
+      role: MINING
+      unlock-level: 15
+      description: "<gray>+5% chance for bonus ore drops."
+      effect: drop_chance
+      values: { chance: 0.05 }
+    - id: mining_rare_1
+      role: MINING
+      unlock-level: 25
+      description: "<gray>+3% chance for rare ore drops."
+      effect: rare_drop_chance
+      values: { chance: 0.03 }
+    - id: mining_auto_1
+      role: MINING
+      unlock-level: 35
+      description: "<gray>+15% Core Tokens from mining."
+      effect: core_token_multiplier
+      values: { multiplier: 0.15 }
+    - id: mining_ability_fortune
+      role: MINING
+      unlock-level: 45
+      description: "<bold><gold>OmniTool: Fortune</bold> <gray>unlocked."
+      effect: ability
+      values: { omnitool: fortune, levels: 1 }
+  FARMING:
+    - id: farm_xp_1
+      role: FARMING
+      unlock-level: 2
+      description: "<gray>+10% farming XP from all harvesting."
+      effect: xp_multiplier
+      values: { multiplier: 0.10 }
+    - id: farm_token_1
+      role: FARMING
+      unlock-level: 5
+      description: "<gray>+10% Sky Tokens from farming."
+      effect: token_multiplier
+      values: { multiplier: 0.10 }
+    - id: farm_core_1
+      role: FARMING
+      unlock-level: 10
+      description: "<gray>+5% Core contribution from farming."
+      effect: core_money_multiplier
+      values: { multiplier: 0.05 }
+    - id: farm_replant_1
+      role: FARMING
+      unlock-level: 15
+      description: "<gray>+20% chance to auto-replant harvested crops."
+      effect: replant_chance
+      values: { chance: 0.20 }
+    - id: farm_yield_1
+      role: FARMING
+      unlock-level: 25
+      description: "<gray>+10% crop yield (bonus drops)."
+      effect: drop_chance
+      values: { chance: 0.10 }
+    - id: farm_core_2
+      role: FARMING
+      unlock-level: 35
+      description: "<gray>+15% Core Tokens from farming."
+      effect: core_token_multiplier
+      values: { multiplier: 0.15 }
+    - id: farm_ability_auto_sell
+      role: FARMING
+      unlock-level: 40
+      description: "<bold><gold>OmniTool: Auto-Sell</bold> <gray>unlocked."
+      effect: ability
+      values: { omnitool: auto_sell, levels: 1 }
+  FISHING:
+    - id: fish_xp_1
+      role: FISHING
+      unlock-level: 2
+      description: "<gray>+10% fishing XP from catches."
+      effect: xp_multiplier
+      values: { multiplier: 0.10 }
+    - id: fish_token_1
+      role: FISHING
+      unlock-level: 5
+      description: "<gray>+10% Sky Tokens from fishing."
+      effect: token_multiplier
+      values: { multiplier: 0.10 }
+    - id: fish_core_1
+      role: FISHING
+      unlock-level: 10
+      description: "<gray>+5% Core contribution from fishing."
+      effect: core_money_multiplier
+      values: { multiplier: 0.05 }
+    - id: fish_rare_1
+      role: FISHING
+      unlock-level: 15
+      description: "<gray>+5% chance for rare catches."
+      effect: rare_drop_chance
+      values: { chance: 0.05 }
+    - id: fish_reward_1
+      role: FISHING
+      unlock-level: 25
+      description: "<gray>+10% fishing rewards (bonus loot)."
+      effect: drop_chance
+      values: { chance: 0.10 }
+    - id: fish_core_2
+      role: FISHING
+      unlock-level: 35
+      description: "<gray>+15% Core Tokens from fishing."
+      effect: core_token_multiplier
+      values: { multiplier: 0.15 }
+    - id: fish_ability_bonus_drops
+      role: FISHING
+      unlock-level: 40
+      description: "<bold><gold>OmniTool: Bonus Drops</bold> <gray>unlocked."
+      effect: ability
+      values: { omnitool: bonus_drops, levels: 1 }
+  LOGGING:
+    - id: log_xp_1
+      role: LOGGING
+      unlock-level: 2
+      description: "<gray>+10% logging XP from all logging."
+      effect: xp_multiplier
+      values: { multiplier: 0.10 }
+    - id: log_token_1
+      role: LOGGING
+      unlock-level: 5
+      description: "<gray>+10% Sky Tokens from logging."
+      effect: token_multiplier
+      values: { multiplier: 0.10 }
+    - id: log_core_1
+      role: LOGGING
+      unlock-level: 10
+      description: "<gray>+5% Core contribution from logging."
+      effect: core_money_multiplier
+      values: { multiplier: 0.05 }
+    - id: log_yield_1
+      role: LOGGING
+      unlock-level: 15
+      description: "<gray>+10% log yield (bonus drops)."
+      effect: drop_chance
+      values: { chance: 0.10 }
+    - id: log_feller_1
+      role: LOGGING
+      unlock-level: 25
+      description: "<gray>+15% chance to fell the whole tree at once."
+      effect: feller_chance
+      values: { chance: 0.15 }
+    - id: log_core_2
+      role: LOGGING
+      unlock-level: 35
+      description: "<gray>+15% Core Tokens from logging."
+      effect: core_token_multiplier
+      values: { multiplier: 0.15 }
+    - id: log_ability_tree_feller
+      role: LOGGING
+      unlock-level: 40
+      description: "<bold><gold>OmniTool: Tree Feller</bold> <gray>unlocked."
+      effect: ability
+      values: { omnitool: tree_feller, levels: 1 }
+  SLAYING:
+    - id: slay_xp_1
+      role: SLAYING
+      unlock-level: 2
+      description: "<gray>+10% Slayer XP from all kills."
+      effect: xp_multiplier
+      values: { multiplier: 0.10 }
+    - id: slay_token_1
+      role: SLAYING
+      unlock-level: 5
+      description: "<gray>+10% Sky Tokens from kills."
+      effect: token_multiplier
+      values: { multiplier: 0.10 }
+    - id: slay_core_1
+      role: SLAYING
+      unlock-level: 10
+      description: "<gray>+5% Core contribution from mob kills."
+      effect: core_money_multiplier
+      values: { multiplier: 0.05 }
+    - id: slay_drop_1
+      role: SLAYING
+      unlock-level: 15
+      description: "<gray>+5% mob drop chance."
+      effect: drop_chance
+      values: { chance: 0.05 }
+    - id: slay_rare_1
+      role: SLAYING
+      unlock-level: 25
+      description: "<gray>+3% chance for rare mob drops."
+      effect: rare_drop_chance
+      values: { chance: 0.03 }
+    - id: slay_combat_1
+      role: SLAYING
+      unlock-level: 35
+      description: "<gray>+10% combat damage vs slayer targets."
+      effect: combat_bonus
+      values: { multiplier: 0.10 }
+    - id: slay_ability_lifesteal
+      role: SLAYING
+      unlock-level: 40
+      description: "<bold><gold>OmniTool: Lifesteal</bold> <gray>unlocked."
+      effect: ability
+      values: { omnitool: lifesteal, levels: 1 }
+  UNIVERSAL:
+    - id: uni_xp_1
+      role: UNIVERSAL
+      unlock-level: 5
+      description: "<gray>+5% XP across all supported activities."
+      effect: xp_multiplier
+      values: { multiplier: 0.05 }
+    - id: uni_token_1
+      role: UNIVERSAL
+      unlock-level: 10
+      description: "<gray>+5% Sky Tokens across activities."
+      effect: token_multiplier
+      values: { multiplier: 0.05 }
+    - id: uni_core_1
+      role: UNIVERSAL
+      unlock-level: 20
+      description: "<gray>+5% Core contribution across activities."
+      effect: core_money_multiplier
+      values: { multiplier: 0.05 }
+    - id: uni_econ_1
+      role: UNIVERSAL
+      unlock-level: 30
+      description: "<gray>+5% economy (sell) value across activities."
+      effect: economy_multiplier
+      values: { multiplier: 0.05 }
+    - id: uni_ability_utility
+      role: UNIVERSAL
+      unlock-level: 50
+      description: "<bold><gold>Universal Utility</bold> <gray>utility ability unlocked."
+      effect: ability
+      values: { omnitool: universal_utility, levels: 1 }
+
+# One-time milestone rewards granted the first time a player reaches a
+# role level. Roles track claimed milestones in roles.yml so each grant
+# fires exactly once. Reward keys are all optional:
+#   tokens, credits, core-money, core-tokens, core-progression
+#   cosmetic, skin, tag, gradient
+#   omnitool-upgrade (+ omnitool-upgrade-levels)
+#   message (MiniMessage, sent on claim)
+#   rewards: [ "<item:DIAMOND>x3", ... ]  (loot table, resolved by RewardResolver)
+role-milestones:
+  MINING:
+    5:
+      message: "<bold><gray>Miner Lv5</bold> <gray>— small starter pack."
+      tokens: 200
+      rewards: [ "<item:IRON_ORE>x16" ]
+    10:
+      message: "<bold><aqua>Miner Lv10</bold> <gray>— Core bonus unlocked."
+      tokens: 500
+      core-money: 50.0
+    20:
+      message: "<bold><aqua>Miner Lv20</bold> <gray>— +5% mining Core contribution."
+      tokens: 1000
+      core-money: 200.0
+      cosmetic: "season1_miner"
+    30:
+      message: "<bold><gold>Miner Lv30</bold> <gray>— major Core unlock."
+      tokens: 2500
+      core-money: 500.0
+      core-tokens: 25.0
+    40:
+      message: "<bold><gold>Miner Lv40</bold> <gray>— OmniTool upgrade."
+      tokens: 5000
+      core-progression: 100
+      omnitool-upgrade: "fortune"
+      omnitool-upgrade-levels: 2
+    50:
+      message: "<bold><yellow>Miner Lv50</bold> <gray>— Season 1 endgame reward."
+      tokens: 15000
+      credits: 5000
+      core-money: 2000.0
+      core-tokens: 100.0
+      skin: "miner_season1"
+      tag: "miner"
+  FARMING:
+    5: { message: "<bold><gray>Farmer Lv5</bold> <gray>— starter pack.", tokens: 200, rewards: [ "<item:WHEAT>x32" ] }
+    10: { message: "<bold><aqua>Farmer Lv10</bold> <gray>— Core bonus unlocked.", tokens: 500, core-money: 50.0 }
+    20: { message: "<bold><aqua>Farmer Lv20</bold> <gray>— +5% farming Core contribution.", tokens: 1000, core-money: 200.0, cosmetic: "season1_farmer" }
+    30: { message: "<bold><gold>Farmer Lv30</bold> <gray>— major Core unlock.", tokens: 2500, core-money: 500.0, core-tokens: 25.0 }
+    40: { message: "<bold><gold>Farmer Lv40</bold> <gray>— OmniTool upgrade.", tokens: 5000, core-progression: 100, omnitool-upgrade: "auto_sell", omnitool-upgrade-levels: 2 }
+    50: { message: "<bold><yellow>Farmer Lv50</bold> <gray>— Season 1 endgame reward.", tokens: 15000, credits: 5000, core-money: 2000.0, core-tokens: 100.0, skin: "farmer_season1", tag: "farmer" }
+  FISHING:
+    5: { message: "<bold><gray>Fisher Lv5</bold> <gray>— starter pack.", tokens: 200, rewards: [ "<item:COD>x16" ] }
+    10: { message: "<bold><aqua>Fisher Lv10</bold> <gray>— Core bonus unlocked.", tokens: 500, core-money: 50.0 }
+    20: { message: "<bold><aqua>Fisher Lv20</bold> <gray>— +5% fishing Core contribution.", tokens: 1000, core-money: 200.0, cosmetic: "season1_fisher" }
+    30: { message: "<bold><gold>Fisher Lv30</bold> <gray>— major Core unlock.", tokens: 2500, core-money: 500.0, core-tokens: 25.0 }
+    40: { message: "<bold><gold>Fisher Lv40</bold> <gray>— OmniTool upgrade.", tokens: 5000, core-progression: 100, omnitool-upgrade: "bonus_drops", omnitool-upgrade-levels: 2 }
+    50: { message: "<bold><yellow>Fisher Lv50</bold> <gray>— Season 1 endgame reward.", tokens: 15000, credits: 5000, core-money: 2000.0, core-tokens: 100.0, skin: "fisher_season1", tag: "fisher" }
+  LOGGING:
+    5: { message: "<bold><gray>Logger Lv5</bold> <gray>— starter pack.", tokens: 200, rewards: [ "<item:OAK_LOG>x32" ] }
+    10: { message: "<bold><aqua>Logger Lv10</bold> <gray>— Core bonus unlocked.", tokens: 500, core-money: 50.0 }
+    20: { message: "<bold><aqua>Logger Lv20</bold> <gray>— +5% logging Core contribution.", tokens: 1000, core-money: 200.0, cosmetic: "season1_logger" }
+    30: { message: "<bold><gold>Logger Lv30</bold> <gray>— major Core unlock.", tokens: 2500, core-money: 500.0, core-tokens: 25.0 }
+    40: { message: "<bold><gold>Logger Lv40</bold> <gray>— OmniTool upgrade.", tokens: 5000, core-progression: 100, omnitool-upgrade: "tree_feller", omnitool-upgrade-levels: 2 }
+    50: { message: "<bold><yellow>Logger Lv50</bold> <gray>— Season 1 endgame reward.", tokens: 15000, credits: 5000, core-money: 2000.0, core-tokens: 100.0, skin: "logger_season1", tag: "logger" }
+  SLAYING:
+    5: { message: "<bold><gray>Slayer Lv5</bold> <gray>— starter pack.", tokens: 200, rewards: [ "<item:ROTTEN_FLESH>x32" ] }
+    10: { message: "<bold><aqua>Slayer Lv10</bold> <gray>— Core bonus unlocked.", tokens: 500, core-money: 50.0 }
+    20: { message: "<bold><aqua>Slayer Lv20</bold> <gray>— +5% kill Core contribution.", tokens: 1000, core-money: 200.0, cosmetic: "season1_slayer" }
+    30: { message: "<bold><gold>Slayer Lv30</bold> <gray>— +5% rare drop chance.", tokens: 2500, core-money: 500.0, core-tokens: 25.0 }
+    40: { message: "<bold><gold>Slayer Lv40</bold> <gray>— OmniTool upgrade.", tokens: 5000, core-progression: 100, omnitool-upgrade: "lifesteal", omnitool-upgrade-levels: 2 }
+    50: { message: "<bold><yellow>Slayer Lv50</bold> <gray>— Season 1 endgame reward.", tokens: 15000, credits: 5000, core-money: 2000.0, core-tokens: 100.0, skin: "slayer_season1", tag: "slayer" }
+  UNIVERSAL:
+    5: { message: "<bold><gray>Universal Lv5</bold> <gray>— flexible starter pack.", tokens: 150, rewards: [ "<item:EXPERIENCE_BOTTLE>x8" ] }
+    10: { message: "<bold><aqua>Universal Lv10</bold> <gray>— small all-round bonus.", tokens: 400, core-money: 40.0 }
+    20: { message: "<bold><aqua>Universal Lv20</bold> <gray>— +5% Core across activities.", tokens: 800, core-money: 150.0, cosmetic: "season1_universal" }
+    30: { message: "<bold><gold>Universal Lv30</bold> <gray>— economy bonus.", tokens: 2000, core-money: 400.0, core-tokens: 20.0 }
+    40: { message: "<bold><gold>Universal Lv40</bold> <gray>— utility boost.", tokens: 4000, core-progression: 80 }
+    50: { message: "<bold><yellow>Universal Lv50</bold> <gray>— Season 1 endgame reward.", tokens: 12000, credits: 4000, core-money: 1500.0, core-tokens: 80.0, skin: "universal_season1", tag: "universal" }
+
+# Island Core contribution rates per role activity. Read by CoreConfig
+# (island-core.contributions.<activity>.<money|tokens>). Routed through
+# CoreService.contribute — no new currency.
+island-core:
+  contributions:
+    mining: { money: 0.1, tokens: 0.1 }
+    farming: { money: 0.1, tokens: 0.1 }
+    logging: { money: 0.1, tokens: 0.1 }
+    fishing: { money: 0.1, tokens: 0.1 }
+  island-top:
+    money-weight: 1.0
+    token-weight: 1.0
+  island:
+    start-money: 0.0
+
+# ---- skyblock-gens ----
+# Global island generator cap. Never exceeds gens.max-cap (5000).
+gens:
+  default-cap: 10
+  cap-per-upgrade-level: 50
+  max-cap: 5000
+  generators:
+    wheat:
+      name: "Wheat Generator"
+      material: "HAY_BLOCK"
+      produce: "WHEAT"
+      produce-amount: 1
+      price: 1000
+      interval: 3
+    carrot:
+      name: "Carrot Generator"
+      material: "ORANGE_CONCRETE"
+      produce: "CARROT"
+      produce-amount: 1
+      price: 2500
+      interval: 3
+    potato:
+      name: "Potato Generator"
+      material: "BROWN_CONCRETE"
+      produce: "POTATO"
+      produce-amount: 1
+      price: 5000
+      interval: 3
+    beetroot:
+      name: "Beetroot Generator"
+      material: "RED_CONCRETE"
+      produce: "BEETROOT"
+      produce-amount: 1
+      price: 10000
+      interval: 3
+    sugar_cane:
+      name: "Sugar Cane Generator"
+      material: "LIME_CONCRETE"
+      produce: "SUGAR_CANE"
+      produce-amount: 1
+      price: 20000
+      interval: 3
+    cactus:
+      name: "Cactus Generator"
+      material: "GREEN_CONCRETE"
+      produce: "CACTUS"
+      produce-amount: 1
+      price: 40000
+      interval: 3
+    melon:
+      name: "Melon Generator"
+      material: "MELON"
+      produce: "MELON_SLICE"
+      produce-amount: 1
+      price: 75000
+      interval: 3
+    pumpkin:
+      name: "Pumpkin Generator"
+      material: "PUMPKIN"
+      produce: "PUMPKIN"
+      produce-amount: 1
+      price: 120000
+      interval: 3
+    cocoa_beans:
+      name: "Cocoa Beans Generator"
+      material: "BROWN_TERRACOTTA"
+      produce: "COCOA_BEANS"
+      produce-amount: 1
+      price: 200000
+      interval: 3
+    bamboo:
+      name: "Bamboo Generator"
+      material: "BAMBOO_BLOCK"
+      produce: "BAMBOO"
+      produce-amount: 1
+      price: 300000
+      interval: 3
+    sweet_berry:
+      name: "Sweet Berry Generator"
+      material: "RED_CONCRETE"
+      produce: "SWEET_BERRIES"
+      produce-amount: 1
+      price: 450000
+      interval: 3
+    glow_berry:
+      name: "Glow Berry Generator"
+      material: "YELLOW_CONCRETE"
+      produce: "GLOW_BERRIES"
+      produce-amount: 1
+      price: 700000
+      interval: 3
+    nether_wart:
+      name: "Nether Wart Generator"
+      material: "NETHER_WART_BLOCK"
+      produce: "NETHER_WART"
+      produce-amount: 1
+      price: 1000000
+      interval: 3
+    chorus_fruit:
+      name: "Chorus Fruit Generator"
+      material: "PURPLE_CONCRETE"
+      produce: "CHORUS_FRUIT"
+      produce-amount: 1
+      price: 1500000
+      interval: 3
+    kelp:
+      name: "Kelp Generator"
+      material: "GREEN_CONCRETE"
+      produce: "KELP"
+      produce-amount: 1
+      price: 2000000
+      interval: 3
+    apple:
+      name: "Apple Generator"
+      material: "RED_CONCRETE"
+      produce: "APPLE"
+      produce-amount: 1
+      price: 3000000
+      interval: 4
+    mushroom:
+      name: "Mushroom Generator"
+      material: "RED_MUSHROOM_BLOCK"
+      produce: "RED_MUSHROOM"
+      produce-amount: 1
+      price: 4500000
+      interval: 3
+    crimson_fungus:
+      name: "Crimson Fungus Generator"
+      material: "CRIMSON_FUNGUS"
+      produce: "CRIMSON_FUNGUS"
+      produce-amount: 1
+      price: 7000000
+      interval: 3
+    warped_fungus:
+      name: "Warped Fungus Generator"
+      material: "WARPED_FUNGUS"
+      produce: "WARPED_FUNGUS"
+      produce-amount: 1
+      price: 10000000
+      interval: 3
+    mixed_crop:
+      name: "Mixed Crop Generator"
+      material: "WHITE_CONCRETE"
+      produce-list: [WHEAT, CARROT, POTATO, BEETROOT, MELON_SLICE, PUMPKIN, SWEET_BERRIES, BROWN_MUSHROOM]
+      produce-amount: 1
+      price: 15000000
+      interval: 5
+
+# ---- skyblock-spawners ----
+# Global island spawner cap. Never exceeds spawners.max-cap (5000).
+# Each tier (except Pig) requires killing `requirement` of the PREVIOUS mob
+# to unlock. `order` defines progression sequence (1 = first).
+spawners:
+  default-cap: 10
+  cap-per-upgrade-level: 50
+  max-cap: 5000
+  spawners:
+    pig:
+      name: "Pig Spawner"
+      mob: "PIG"
+      price: 1000
+      interval: 8
+      requirement: 0
+      order: 1
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 10
+          core: 20
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "RAW_PORKCHOP"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 3
+              core: 5
+              tokens: 1
+        corrupted:
+          name: "Corrupted"
+          requirement: 200
+          cost: 1500
+          multiplier: 2
+          money: 30
+          core: 60
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "RAW_PORKCHOP"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 5
+              core: 9
+              tokens: 1
+        ancient:
+          name: "Ancient"
+          requirement: 1000
+          cost: 4000
+          multiplier: 3
+          money: 100
+          core: 180
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "RAW_PORKCHOP"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 10
+              core: 17.5
+              tokens: 1
+        fourth:
+          name: "Primordial"
+          requirement: 4000
+          cost: 10000
+          multiplier: 4
+          money: 300
+          core: 500
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "RAW_PORKCHOP"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 21
+              core: 35
+              tokens: 1
+    chicken:
+      name: "Chicken Spawner"
+      mob: "CHICKEN"
+      price: 2500
+      interval: 8
+      requirement: 100
+      order: 2
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 25
+          core: 50
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "RAW_CHICKEN"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 7
+              core: 12.5
+              tokens: 1
+            - material: "FEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 7
+              core: 12.5
+              tokens: 1
+        corrupted:
+          name: "Corrupted"
+          requirement: 500
+          cost: 3750
+          multiplier: 2
+          money: 75
+          core: 150
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "RAW_CHICKEN"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 13
+              core: 22.5
+              tokens: 1
+            - material: "FEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 13
+              core: 22.5
+              tokens: 1
+        ancient:
+          name: "Ancient"
+          requirement: 2500
+          cost: 10000
+          multiplier: 3
+          money: 250
+          core: 450
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "RAW_CHICKEN"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 26
+              core: 43.75
+              tokens: 1
+            - material: "FEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 26
+              core: 43.75
+              tokens: 1
+        fourth:
+          name: "Primordial"
+          requirement: 10000
+          cost: 25000
+          multiplier: 4
+          money: 750
+          core: 1250
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "RAW_CHICKEN"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 52
+              core: 87.5
+              tokens: 3
+            - material: "FEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 52
+              core: 87.5
+              tokens: 3
+    cow:
+      name: "Cow Spawner"
+      mob: "COW"
+      price: 6000
+      interval: 8
+      requirement: 250
+      order: 3
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 60
+          core: 120
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "RAW_BEEF"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 18
+              core: 30
+              tokens: 1
+            - material: "LEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 18
+              core: 30
+              tokens: 1
+        corrupted:
+          name: "Corrupted"
+          requirement: 1200
+          cost: 9000
+          multiplier: 2
+          money: 180
+          core: 360
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "RAW_BEEF"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 32
+              core: 54
+              tokens: 2
+            - material: "LEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 32
+              core: 54
+              tokens: 2
+        ancient:
+          name: "Ancient"
+          requirement: 6000
+          cost: 24000
+          multiplier: 3
+          money: 600
+          core: 1080
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "RAW_BEEF"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 63
+              core: 105
+              tokens: 4
+            - material: "LEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 63
+              core: 105
+              tokens: 4
+        fourth:
+          name: "Primordial"
+          requirement: 24000
+          cost: 60000
+          multiplier: 4
+          money: 1800
+          core: 3000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "RAW_BEEF"
+              min: 1
+              max: 3
+              chance: 1.0
+              sell: 126
+              core: 210
+              tokens: 8
+            - material: "LEATHER"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 126
+              core: 210
+              tokens: 8
+    sheep:
+      name: "Sheep Spawner"
+      mob: "SHEEP"
+      price: 12000
+      interval: 8
+      requirement: 500
+      order: 4
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 120
+          core: 240
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "MUTTON"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 36
+              core: 60
+              tokens: 2
+            - material: "WHITE_WOOL"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 36
+              core: 60
+              tokens: 2
+        corrupted:
+          name: "Corrupted"
+          requirement: 2400
+          cost: 18000
+          multiplier: 2
+          money: 360
+          core: 720
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "MUTTON"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 64
+              core: 108
+              tokens: 4
+            - material: "WHITE_WOOL"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 64
+              core: 108
+              tokens: 4
+        ancient:
+          name: "Ancient"
+          requirement: 12000
+          cost: 48000
+          multiplier: 3
+          money: 1200
+          core: 2160
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "MUTTON"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 126
+              core: 210
+              tokens: 8
+            - material: "WHITE_WOOL"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 126
+              core: 210
+              tokens: 8
+        fourth:
+          name: "Primordial"
+          requirement: 48000
+          cost: 120000
+          multiplier: 4
+          money: 3600
+          core: 6000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "MUTTON"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 252
+              core: 420
+              tokens: 16
+            - material: "WHITE_WOOL"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 252
+              core: 420
+              tokens: 16
+    zombie:
+      name: "Zombie Spawner"
+      mob: "ZOMBIE"
+      price: 25000
+      interval: 8
+      requirement: 1000
+      order: 5
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 250
+          core: 500
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "ROTTEN_FLESH"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 75
+              core: 125
+              tokens: 5
+        corrupted:
+          name: "Corrupted"
+          requirement: 5000
+          cost: 37500
+          multiplier: 2
+          money: 750
+          core: 1500
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "ROTTEN_FLESH"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 135
+              core: 225
+              tokens: 9
+        ancient:
+          name: "Ancient"
+          requirement: 25000
+          cost: 100000
+          multiplier: 3
+          money: 2500
+          core: 4500
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "ROTTEN_FLESH"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 262
+              core: 437.5
+              tokens: 17
+        fourth:
+          name: "Primordial"
+          requirement: 100000
+          cost: 250000
+          multiplier: 4
+          money: 7500
+          core: 12500
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "ROTTEN_FLESH"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 525
+              core: 875
+              tokens: 35
+    skeleton:
+      name: "Skeleton Spawner"
+      mob: "SKELETON"
+      price: 50000
+      interval: 8
+      requirement: 2000
+      order: 6
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 500
+          core: 1000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "BONE"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 150
+              core: 250
+              tokens: 10
+            - material: "ARROW"
+              min: 1
+              max: 3
+              chance: 0.8
+              sell: 150
+              core: 250
+              tokens: 10
+        corrupted:
+          name: "Corrupted"
+          requirement: 10000
+          cost: 75000
+          multiplier: 2
+          money: 1500
+          core: 3000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "BONE"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 270
+              core: 450
+              tokens: 18
+            - material: "ARROW"
+              min: 1
+              max: 3
+              chance: 0.8
+              sell: 270
+              core: 450
+              tokens: 18
+        ancient:
+          name: "Ancient"
+          requirement: 50000
+          cost: 200000
+          multiplier: 3
+          money: 5000
+          core: 9000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "BONE"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 525
+              core: 875
+              tokens: 35
+            - material: "ARROW"
+              min: 1
+              max: 3
+              chance: 0.8
+              sell: 525
+              core: 875
+              tokens: 35
+        fourth:
+          name: "Primordial"
+          requirement: 200000
+          cost: 500000
+          multiplier: 4
+          money: 15000
+          core: 25000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "BONE"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 1050
+              core: 1750
+              tokens: 70
+            - material: "ARROW"
+              min: 1
+              max: 3
+              chance: 0.8
+              sell: 1050
+              core: 1750
+              tokens: 70
+    spider:
+      name: "Spider Spawner"
+      mob: "SPIDER"
+      price: 90000
+      interval: 8
+      requirement: 4000
+      order: 7
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 900
+          core: 1800
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "STRING"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 270
+              core: 450
+              tokens: 18
+            - material: "SPIDER_EYE"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 270
+              core: 450
+              tokens: 18
+        corrupted:
+          name: "Corrupted"
+          requirement: 18000
+          cost: 135000
+          multiplier: 2
+          money: 2700
+          core: 5400
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "STRING"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 486
+              core: 810
+              tokens: 32
+            - material: "SPIDER_EYE"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 486
+              core: 810
+              tokens: 32
+        ancient:
+          name: "Ancient"
+          requirement: 90000
+          cost: 360000
+          multiplier: 3
+          money: 9000
+          core: 16200
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "STRING"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 945
+              core: 1575
+              tokens: 63
+            - material: "SPIDER_EYE"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 945
+              core: 1575
+              tokens: 63
+        fourth:
+          name: "Primordial"
+          requirement: 360000
+          cost: 900000
+          multiplier: 4
+          money: 27000
+          core: 45000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "STRING"
+              min: 1
+              max: 2
+              chance: 1.0
+              sell: 1890
+              core: 3150
+              tokens: 126
+            - material: "SPIDER_EYE"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 1890
+              core: 3150
+              tokens: 126
+    creeper:
+      name: "Creeper Spawner"
+      mob: "CREEPER"
+      price: 150000
+      interval: 8
+      requirement: 7500
+      order: 8
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 1500
+          core: 3000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "GUNPOWDER"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 450
+              core: 750
+              tokens: 30
+        corrupted:
+          name: "Corrupted"
+          requirement: 30000
+          cost: 225000
+          multiplier: 2
+          money: 4500
+          core: 9000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "GUNPOWDER"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 810
+              core: 1350
+              tokens: 54
+        ancient:
+          name: "Ancient"
+          requirement: 150000
+          cost: 600000
+          multiplier: 3
+          money: 15000
+          core: 27000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "GUNPOWDER"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 1575
+              core: 2625
+              tokens: 105
+        fourth:
+          name: "Primordial"
+          requirement: 600000
+          cost: 1500000
+          multiplier: 4
+          money: 45000
+          core: 75000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "GUNPOWDER"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 3150
+              core: 5250
+              tokens: 210
+    witch:
+      name: "Witch Spawner"
+      mob: "WITCH"
+      price: 250000
+      interval: 8
+      requirement: 12500
+      order: 9
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 2500
+          core: 5000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "GLASS_BOTTLE"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 750
+              core: 1250
+              tokens: 50
+            - material: "REDSTONE"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 750
+              core: 1250
+              tokens: 50
+        corrupted:
+          name: "Corrupted"
+          requirement: 50000
+          cost: 375000
+          multiplier: 2
+          money: 7500
+          core: 15000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "GLASS_BOTTLE"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 1350
+              core: 2250
+              tokens: 90
+            - material: "REDSTONE"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 1350
+              core: 2250
+              tokens: 90
+        ancient:
+          name: "Ancient"
+          requirement: 250000
+          cost: 1000000
+          multiplier: 3
+          money: 25000
+          core: 45000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "GLASS_BOTTLE"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 2625
+              core: 4375
+              tokens: 175
+            - material: "REDSTONE"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 2625
+              core: 4375
+              tokens: 175
+        fourth:
+          name: "Primordial"
+          requirement: 1000000
+          cost: 2500000
+          multiplier: 4
+          money: 75000
+          core: 125000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "GLASS_BOTTLE"
+              min: 1
+              max: 2
+              chance: 0.6
+              sell: 5250
+              core: 8750
+              tokens: 350
+            - material: "REDSTONE"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 5250
+              core: 8750
+              tokens: 350
+    enderman:
+      name: "Enderman Spawner"
+      mob: "ENDERMAN"
+      price: 400000
+      interval: 8
+      requirement: 20000
+      order: 10
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 4000
+          core: 8000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "ENDER_PEARL"
+              min: 0
+              max: 1
+              chance: 0.6
+              sell: 1200
+              core: 2000
+              tokens: 80
+        corrupted:
+          name: "Corrupted"
+          requirement: 80000
+          cost: 600000
+          multiplier: 2
+          money: 12000
+          core: 24000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "ENDER_PEARL"
+              min: 0
+              max: 1
+              chance: 0.6
+              sell: 2160
+              core: 3600
+              tokens: 144
+        ancient:
+          name: "Ancient"
+          requirement: 400000
+          cost: 1600000
+          multiplier: 3
+          money: 40000
+          core: 72000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "ENDER_PEARL"
+              min: 0
+              max: 1
+              chance: 0.6
+              sell: 4200
+              core: 7000
+              tokens: 280
+        fourth:
+          name: "Primordial"
+          requirement: 1600000
+          cost: 4000000
+          multiplier: 4
+          money: 120000
+          core: 200000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "ENDER_PEARL"
+              min: 0
+              max: 1
+              chance: 0.6
+              sell: 8400
+              core: 14000
+              tokens: 560
+    blaze:
+      name: "Blaze Spawner"
+      mob: "BLAZE"
+      price: 600000
+      interval: 8
+      requirement: 35000
+      order: 11
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 6000
+          core: 12000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "BLAZE_ROD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 1800
+              core: 3000
+              tokens: 120
+        corrupted:
+          name: "Corrupted"
+          requirement: 120000
+          cost: 900000
+          multiplier: 2
+          money: 18000
+          core: 36000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "BLAZE_ROD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 3240
+              core: 5400
+              tokens: 216
+        ancient:
+          name: "Ancient"
+          requirement: 600000
+          cost: 2400000
+          multiplier: 3
+          money: 60000
+          core: 108000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "BLAZE_ROD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 6300
+              core: 10500
+              tokens: 420
+        fourth:
+          name: "Primordial"
+          requirement: 2400000
+          cost: 6000000
+          multiplier: 4
+          money: 180000
+          core: 300000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "BLAZE_ROD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 12600
+              core: 21000
+              tokens: 840
+    guardian:
+      name: "Guardian Spawner"
+      mob: "GUARDIAN"
+      price: 900000
+      interval: 8
+      requirement: 50000
+      order: 12
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 9000
+          core: 18000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "PRISMARINE_SHARD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 2700
+              core: 4500
+              tokens: 180
+            - material: "RAW_COD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 2700
+              core: 4500
+              tokens: 180
+        corrupted:
+          name: "Corrupted"
+          requirement: 180000
+          cost: 1350000
+          multiplier: 2
+          money: 27000
+          core: 54000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "PRISMARINE_SHARD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 4860
+              core: 8100
+              tokens: 324
+            - material: "RAW_COD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 4860
+              core: 8100
+              tokens: 324
+        ancient:
+          name: "Ancient"
+          requirement: 900000
+          cost: 3600000
+          multiplier: 3
+          money: 90000
+          core: 162000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "PRISMARINE_SHARD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 9450
+              core: 15750
+              tokens: 630
+            - material: "RAW_COD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 9450
+              core: 15750
+              tokens: 630
+        fourth:
+          name: "Primordial"
+          requirement: 3600000
+          cost: 9000000
+          multiplier: 4
+          money: 270000
+          core: 450000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "PRISMARINE_SHARD"
+              min: 1
+              max: 2
+              chance: 0.9
+              sell: 18900
+              core: 31500
+              tokens: 1260
+            - material: "RAW_COD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 18900
+              core: 31500
+              tokens: 1260
+    shulker:
+      name: "Shulker Spawner"
+      mob: "SHULKER"
+      price: 1500000
+      interval: 8
+      requirement: 75000
+      order: 13
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 15000
+          core: 30000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "SHULKER_SHELL"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 4500
+              core: 7500
+              tokens: 300
+        corrupted:
+          name: "Corrupted"
+          requirement: 300000
+          cost: 2250000
+          multiplier: 2
+          money: 45000
+          core: 90000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "SHULKER_SHELL"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 8100
+              core: 13500
+              tokens: 540
+        ancient:
+          name: "Ancient"
+          requirement: 1500000
+          cost: 6000000
+          multiplier: 3
+          money: 150000
+          core: 270000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "SHULKER_SHELL"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 15750
+              core: 26250
+              tokens: 1050
+        fourth:
+          name: "Primordial"
+          requirement: 6000000
+          cost: 15000000
+          multiplier: 4
+          money: 450000
+          core: 750000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "SHULKER_SHELL"
+              min: 0
+              max: 1
+              chance: 0.5
+              sell: 31500
+              core: 52500
+              tokens: 2100
+    vindicator:
+      name: "Vindicator Spawner"
+      mob: "VINDICATOR"
+      price: 2500000
+      interval: 8
+      requirement: 100000
+      order: 14
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 25000
+          core: 50000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 7500
+              core: 12500
+              tokens: 500
+        corrupted:
+          name: "Corrupted"
+          requirement: 500000
+          cost: 3750000
+          multiplier: 2
+          money: 75000
+          core: 150000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 13500
+              core: 22500
+              tokens: 900
+        ancient:
+          name: "Ancient"
+          requirement: 2500000
+          cost: 10000000
+          multiplier: 3
+          money: 250000
+          core: 450000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 26250
+              core: 43750
+              tokens: 1750
+        fourth:
+          name: "Primordial"
+          requirement: 10000000
+          cost: 25000000
+          multiplier: 4
+          money: 750000
+          core: 1250000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.4
+              sell: 52500
+              core: 87500
+              tokens: 3500
+    pillager:
+      name: "Pillager Spawner"
+      mob: "PILLAGER"
+      price: 4000000
+      interval: 8
+      requirement: 150000
+      order: 15
+      variants:
+        normal:
+          name: "Normal"
+          requirement: 0
+          cost: 0
+          multiplier: 1
+          money: 40000
+          core: 80000
+          tokens: 1
+          xp: 2
+          benefit: "Baseline drops & value"
+          drops:
+            - material: "CROSSBOW"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 12000
+              core: 20000
+              tokens: 800
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 12000
+              core: 20000
+              tokens: 800
+        corrupted:
+          name: "Corrupted"
+          requirement: 800000
+          cost: 6000000
+          multiplier: 2
+          money: 120000
+          core: 240000
+          tokens: 3
+          xp: 3
+          benefit: "Corrupted drops sell for more"
+          drops:
+            - material: "CROSSBOW"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 21600
+              core: 36000
+              tokens: 1440
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 21600
+              core: 36000
+              tokens: 1440
+        ancient:
+          name: "Ancient"
+          requirement: 4000000
+          cost: 16000000
+          multiplier: 3
+          money: 400000
+          core: 720000
+          tokens: 9
+          xp: 5
+          benefit: "3x progression + high-value materials"
+          drops:
+            - material: "CROSSBOW"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 42000
+              core: 70000
+              tokens: 2800
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 42000
+              core: 70000
+              tokens: 2800
+        fourth:
+          name: "Primordial"
+          requirement: 16000000
+          cost: 40000000
+          multiplier: 4
+          money: 1200000
+          core: 2000000
+          tokens: 25
+          xp: 8
+          benefit: "Highest value + strongest progression"
+          drops:
+            - material: "CROSSBOW"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 84000
+              core: 140000
+              tokens: 5600
+            - material: "EMERALD"
+              min: 0
+              max: 1
+              chance: 0.3
+              sell: 84000
+              core: 140000
+              tokens: 5600
+
+# ---- omnitools ----
+tools:
+  pickaxe:
+    xp-per-block: 1
+    upgrades:
+      efficiency:
+        name: "Efficiency"
+        base-cost: 500
+        cost-multiplier: 1.6
+        max-level: 10
+      fortune:
+        name: "Fortune"
+        base-cost: 1000
+        cost-multiplier: 1.7
+        max-level: 10
+      money-finder:
+        name: "Money Finder"
+        base-cost: 2000
+        cost-multiplier: 1.8
+        max-level: 5
+      token-finder:
+        name: "Token Finder"
+        base-cost: 2000
+        cost-multiplier: 1.8
+        max-level: 5
+      explosive:
+        name: "Explosive"
+        base-cost: 5000
+        cost-multiplier: 2.0
+        max-level: 3
+      jackhammer:
+        name: "Jackhammer"
+        base-cost: 8000
+        cost-multiplier: 2.0
+        max-level: 3
+      key-finder:
+        name: "Key Finder"
+        base-cost: 10000
+        cost-multiplier: 2.0
+        max-level: 3
+
+# ---- coreban ----
+storage:
+  type: sqlite
+  mysql:
+    host: localhost
+    port: 3306
+    database: coreban
+    user: root
+    password: ""
+tiers:
+  T1:
+    - { type: WARNING, duration: 0 }
+    - { type: MUTE, duration: 60 }
+    - { type: MUTE, duration: 300 }
+    - { type: MUTE, duration: 600 }
+    - { type: MUTE, duration: 1800 }
+    - { type: MUTE, duration: 3600 }
+    - { type: MUTE, duration: 21600 }
+    - { type: MUTE, duration: 43200 }
+    - { type: MUTE, duration: 86400 }
+  T2:
+    - { type: WARNING, duration: 0 }
+    - { type: BAN, duration: 86400 }
+    - { type: BAN, duration: 259200 }
+    - { type: BAN, duration: 604800 }
+    - { type: BAN, duration: 1209600 }
+  T3:
+    - { type: BAN, duration: 259200 }
+    - { type: BAN, duration: 604800 }
+    - { type: BAN, duration: 1209600 }
+    - { type: BAN, duration: 2592000 }
+    - { type: BAN, duration: 5184000 }
+  T4:
+    - { type: BAN, duration: 604800 }
+    - { type: BAN, duration: 2592000 }
+    - { type: BAN, duration: 5184000 }
+    - { type: BAN, duration: 0 }
+  T5:
+    - { type: BAN, duration: 2592000 }
+    - { type: BAN, duration: 7776000 }
+    - { type: BAN, duration: 0 }
+
+# ---- corestaff ----
+captcha:
+  attempts: 3
+  timeout-seconds: 30

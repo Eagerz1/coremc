@@ -1,0 +1,27 @@
+# Secrets - NEVER commit real values
+.env
+.env.local
+*.env
+secrets/*.txt
+secrets/*.json
+secrets/*.key
+
+# Build / dependency outputs
+node_modules/
+vendor/
+dist/
+build/
+public/build/
+.next/
+*.jar
+# Note: compiled plugin jar kept in /plugins/coremc per task
+
+# Logs / env
+*.log
+.env.*
+.venv/
+venv/
+__pycache__/
+.idea/
+.vscode/
+*.swp

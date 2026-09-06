@@ -1,0 +1,337 @@
+# ===========================================================================
+# CoreMC — SUMMER LOOTBOX
+# ===========================================================================
+# Theme: Summer / Tropical — limited-time seasonal event.
+# Beaches, ocean, sunsets, holidays, tropical islands, summer, pool/beach activities.
+# Colourful, fun, noticeably different from Beta and SOTW.
+# Loaded by LootboxManager from lootboxes/summer.yml. No Java changes needed.
+# ===========================================================================
+
+display:
+  name: "SUMMER LOOTBOX"
+  description: "Limited-time Summer event rewards."
+  icon-material: TROPICAL_FISH
+  icon-colour: aqua
+  theme: "summer"
+  custom-model-data: ""
+
+# Empty = available to everyone (no permission node required to open).
+permission: ""
+
+sounds:
+  open: "ENTITY_ENDER_CHEST_OPEN"
+  spin-start: "ENTITY_ITEM_PICKUP"
+  spin-loop: "BLOCK_AMBIENT_CRIMSON_FOREST_LOOP"
+  reveal: "UI_TOAST_CHALLENGE_COMPLETE"
+  legendary: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  mythic: "ENTITY_ENDER_DRAGON_DEATH"
+  lightning: "ENTITY_LIGHTNING_BOLT_THUNDER"
+
+particles:
+  type: "PORTAL"
+  colour: "#00e5ff"
+
+animation:
+  rise-ticks: 50
+  spin-ticks: 140
+  reward-appear-delay-ticks: 10
+  reward-appear-interval-ticks: 4
+  spin-slowdown-ticks: 50
+  reveal-pause-ticks: 30
+  rise-height: 2.2
+  particle-type: "PORTAL"
+  particle-colour: "#00e5ff"
+  sound-open: "ENTITY_ENDER_CHEST_OPEN"
+  sound-spin-start: "ENTITY_ITEM_PICKUP"
+  sound-spin-loop: "BLOCK_AMBIENT_CRIMSON_FOREST_LOOP"
+  sound-reveal: "UI_TOAST_CHALLENGE_COMPLETE"
+  sound-legendary: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  sound-mythic: "ENTITY_ENDER_DRAGON_DEATH"
+  lightning-enabled: true
+  lightning-strikes: 3
+  lightning-sound: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  screen-shake: true
+  play-sounds: true
+  stagger-delay-ticks: 1
+
+rewards:
+  # ---------------------------------------------------------------- COMMON
+  summer_credits_500:
+    type: credits
+    amount: 500
+    rarity: COMMON
+    chance: 20.0
+    display: "500 Credits"
+    description: "CoreMC store credit."
+    announce: false
+    rarity-colour: "white"
+  summer_tokens_100:
+    type: tokens
+    amount: 100
+    rarity: COMMON
+    chance: 20.0
+    display: "100 SkyTokens"
+    description: "Progression currency."
+    announce: false
+    rarity-colour: "white"
+  summer_key_1:
+    type: key
+    key: vote
+    amount: 1
+    rarity: COMMON
+    chance: 18.0
+    display: "1x Crate Key"
+    description: "A standard Vote Key."
+    announce: false
+    rarity-colour: "white"
+
+  # -------------------------------------------------------------- UNCOMMON
+  summer_credits_1000:
+    type: credits
+    amount: 1000
+    rarity: UNCOMMON
+    chance: 12.0
+    display: "1,000 Credits"
+    description: "CoreMC store credit."
+    announce: false
+    rarity-colour: "yellow"
+  summer_tokens_250:
+    type: tokens
+    amount: 250
+    rarity: UNCOMMON
+    chance: 11.0
+    display: "250 SkyTokens"
+    description: "Progression currency."
+    announce: false
+    rarity-colour: "yellow"
+  summer_key_3:
+    type: key
+    key: river
+    amount: 3
+    rarity: UNCOMMON
+    chance: 9.0
+    display: "3x Crate Keys"
+    description: "River Keys."
+    announce: false
+    rarity-colour: "yellow"
+
+  # ------------------------------------------------------------------ RARE
+  summer_credits_2500:
+    type: credits
+    amount: 2500
+    rarity: RARE
+    chance: 6.0
+    display: "2,500 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "aqua"
+  summer_tokens_500:
+    type: tokens
+    amount: 500
+    rarity: RARE
+    chance: 6.0
+    display: "500 SkyTokens"
+    description: "Progression currency."
+    announce: true
+    rarity-colour: "aqua"
+  summer_skin_lifeguard:
+    type: skin
+    skin: lifeguard
+    rarity: RARE
+    chance: 3.0
+    display: "Lifeguard Skin"
+    description: "Save the beach."
+    announce: true
+    rarity-colour: "aqua"
+  summer_tag_summer:
+    type: tag
+    tag: SUMMER
+    rarity: RARE
+    chance: 3.0
+    display: "SUMMER Tag"
+    description: "Chat tag: [SUMMER]"
+    announce: true
+    rarity-colour: "aqua"
+  summer_gradient_ocean:
+    type: gradient
+    gradient: ocean
+    rarity: RARE
+    chance: 3.0
+    display: "Ocean Gradient"
+    description: "Chat gradient: Ocean."
+    announce: true
+    rarity-colour: "aqua"
+
+  # ------------------------------------------------------------------ EPIC
+  summer_credits_5000:
+    type: credits
+    amount: 5000
+    rarity: EPIC
+    chance: 2.5
+    display: "5,000 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "light_purple"
+  summer_tokens_1000:
+    type: tokens
+    amount: 1000
+    rarity: EPIC
+    chance: 2.5
+    display: "1,000 SkyTokens"
+    description: "Progression currency."
+    announce: true
+    rarity-colour: "light_purple"
+  summer_skin_surfer:
+    type: skin
+    skin: surfer
+    rarity: EPIC
+    chance: 1.5
+    display: "Surfer Skin"
+    description: "Catch the summer waves."
+    announce: true
+    rarity-colour: "light_purple"
+  summer_tag_vacation:
+    type: tag
+    tag: VACATION
+    rarity: EPIC
+    chance: 1.5
+    display: "VACATION Tag"
+    description: "Chat tag: [VACATION]"
+    announce: true
+    rarity-colour: "light_purple"
+  summer_gradient_tropical:
+    type: gradient
+    gradient: tropical
+    rarity: EPIC
+    chance: 1.5
+    display: "Tropical Gradient"
+    description: "Chat gradient: Tropical."
+    announce: true
+    rarity-colour: "light_purple"
+  summer_companion_beach_ball:
+    type: companion
+    companion: beach_ball
+    rarity: EPIC
+    chance: 1.0
+    display: "Beach Ball"
+    description: "A bouncy summer companion."
+    announce: true
+    rarity-colour: "light_purple"
+  summer_companion_crab:
+    type: companion
+    companion: crab
+    rarity: EPIC
+    chance: 1.0
+    display: "Crab"
+    description: "A beachside crab companion."
+    announce: true
+    rarity-colour: "light_purple"
+  summer_bundle_keys_credits:
+    type: bundle
+    rarity: EPIC
+    chance: 2.0
+    display: "Key & Credit Bundle"
+    description: "3x Crate Keys + 500 Credits."
+    announce: true
+    rarity-colour: "light_purple"
+    bundle:
+      - type: key
+        key: river
+        amount: 3
+      - type: credits
+        amount: 500
+
+  # -------------------------------------------------------------- LEGENDARY
+  summer_credits_10000:
+    type: credits
+    amount: 10000
+    rarity: LEGENDARY
+    chance: 0.6
+    display: "10,000 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "gold"
+  summer_key_10:
+    type: key
+    key: sky
+    amount: 10
+    rarity: LEGENDARY
+    chance: 0.6
+    display: "10x Crate Keys"
+    description: "Ten Sky Keys."
+    announce: true
+    rarity-colour: "gold"
+  summer_skin_beach_king:
+    type: skin
+    skin: beach_king
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "Beach King Skin"
+    description: "Ruler of the summer beach."
+    announce: true
+    rarity-colour: "gold"
+  summer_tag_tropical:
+    type: tag
+    tag: TROPICAL
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "TROPICAL Tag"
+    description: "Chat tag: [TROPICAL]"
+    announce: true
+    rarity-colour: "gold"
+  summer_gradient_sunset:
+    type: gradient
+    gradient: sunset
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "Sunset Gradient"
+    description: "Chat gradient: Sunset."
+    announce: true
+    rarity-colour: "gold"
+  summer_companion_parrot:
+    type: companion
+    companion: parrot
+    rarity: LEGENDARY
+    chance: 0.3
+    display: "Parrot"
+    description: "A colourful tropical parrot."
+    announce: true
+    rarity-colour: "gold"
+
+  # ----------------------------------------------------------------- MYTHIC
+  summer_skin_exclusive:
+    type: skin
+    skin: summer_hero
+    rarity: MYTHIC
+    chance: 0.08
+    display: "Exclusive Summer Skin"
+    description: "Only obtainable from the Summer Lootbox."
+    announce: true
+    rarity-colour: "ff55ff"
+  summer_tag_exclusive:
+    type: tag
+    tag: BEACH
+    rarity: MYTHIC
+    chance: 0.08
+    display: "SUNNY Tag"
+    description: "Chat tag: [SUNNY] — summer prestige."
+    announce: true
+    rarity-colour: "ff55ff"
+  summer_gradient_exclusive:
+    type: gradient
+    gradient: paradise
+    rarity: MYTHIC
+    chance: 0.08
+    display: "Exclusive Summer Gradient"
+    description: "Paradise — summer-only gradient."
+    announce: true
+    rarity-colour: "ff55ff"
+  summer_companion_exclusive:
+    type: companion
+    companion: summer_duck
+    rarity: MYTHIC
+    chance: 0.06
+    display: "Summer Duck"
+    description: "The rarest summer companion."
+    announce: true
+    rarity-colour: "ff55ff"

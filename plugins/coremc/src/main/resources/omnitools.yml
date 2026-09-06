@@ -1,0 +1,777 @@
+omnitools:
+# =============================================================================
+  # CoreMC - OmniTool configuration
+  # =============================================================================
+  # This file is the single source of truth for the OmniTool / role-progression
+  # system. It is fully configurable. Edits here are preserved across restarts.
+  #
+
+  # ---- OmniTool XP curve (TOOL LEVEL, per-Omnitool) ----
+  # Cumulative tool-XP required to BE at each Tool Level. Index = level (level 1 = 0 XP).
+  # The last index is the configurable cap. Numbers kept modest so progression stays balanced.
+  tool-xp-curve: [0, 600, 1300, 2100, 3000, 4000, 5100, 6300, 7600, 9000, 10500, 12100, 13800, 15600, 17500, 19500, 21600, 23800, 26100, 28500, 31000, 33600, 36300, 39100, 42000, 45000, 48100, 51300, 54600, 58000, 61500, 65100, 68800, 72600, 76500, 80500, 84600, 88800, 93100, 97500, 102000, 106600, 111300, 116100, 121000, 126000, 131100, 136300, 141600, 147000, 152500]
+  # Fallback flat value if tool-xp-curve is missing (kept for backwards compat).
+  tool-xp-per-level: 1000
+  # Max Tool Level (also = length of tool-xp-curve - 1).
+  tool-level-cap: 50
+
+  # Base tool-XP awarded per activity action (before event multipliers + OmniTool XP perk).
+  # Kept small/balanced: tool XP comes from doing the role activity.
+  xp-rewards:
+    mining: 5
+    farming: 4
+    logging: 4
+    fishing: 6
+    slaying: 8
+    universal: 4
+
+  # Small base bonus each Tool Level gives to the role's PRIMARY stat (so the tool always
+  # helps a little, and scales with investment). Per role; value is +fraction per tool level.
+  role-bonus:
+    MINING: { stat: mining_speed, per-tool-level: 0.01 }
+    FARMING: { stat: farming_speed, per-tool-level: 0.01 }
+    LOGGING: { stat: logging_speed, per-tool-level: 0.01 }
+    FISHING: { stat: fishing_speed, per-tool-level: 0.01 }
+    SLAYING: { stat: mob_damage, per-tool-level: 0.01 }
+    UNIVERSAL: { stat: universal_speed, per-tool-level: 0.005 }
+
+  # One Omnitool per role. Material + display colour + name.
+  roles:
+    MINING:
+      material: DIAMOND_PICKAXE
+      colour: blue
+      name: "&9Mining Omnitool"
+    FISHING:
+      material: FISHING_ROD
+      colour: aqua
+      name: "&aFishing Omnitool"
+    FARMING:
+      material: DIAMOND_HOE
+      colour: green
+      name: "&aFarming Omnitool"
+    LOGGING:
+      material: DIAMOND_AXE
+      colour: dark_green
+      name: "&aLogging Omnitool"
+    SLAYING:
+      material: DIAMOND_SWORD
+      colour: red
+      name: "&cSlaying Omnitool"
+    UNIVERSAL:
+      material: DIAMOND_SHOVEL
+      colour: gold
+      name: "&6Universal Omnitool"
+
+  # Omnitool upgrades. Each: name, max-level, base-cost, cost-multiplier, currency,
+  # description, effect (shown to player), and the role currency it costs.
+  # Cost to go from level N to N+1 = base-cost * cost-multiplier^N. All values editable.
+  upgrades:
+    efficiency:
+      name: "Efficiency"
+      max-level: 20
+      base-cost: 500
+      cost-multiplier: 1.5
+      currency: MINING
+      description: "Faster block breaks."
+      effect: "+5% break speed per level"
+    fortune:
+      name: "Fortune"
+      max-level: 20
+      base-cost: 1000
+      cost-multiplier: 1.6
+      currency: MINING
+      description: "More drops from blocks."
+      effect: "+8% drop chance per level"
+    rare_ore_chance:
+      name: "Rare Ore Chance"
+      max-level: 15
+      base-cost: 2000
+      cost-multiplier: 1.7
+      currency: MINING
+      description: "Chance to find rare ores."
+      effect: "+1% rare ore chance per level"
+    resource_chance:
+      name: "Resource Chance"
+      max-level: 15
+      base-cost: 1500
+      cost-multiplier: 1.6
+      currency: MINING
+      description: "Better resource yields."
+      effect: "+1% resource yield per level"
+    generator_chance:
+      name: "Generator Chance"
+      max-level: 10
+      base-cost: 5000
+      cost-multiplier: 1.8
+      currency: MINING
+      description: "Chance to drop a generator."
+      effect: "+0.5% generator drop per level"
+    speed:
+      name: "Speed"
+      max-level: 15
+      base-cost: 1200
+      cost-multiplier: 1.6
+      currency: FISHING
+      description: "Faster reeling / movement."
+      effect: "+2% speed per level"
+    bonus_drops:
+      name: "Bonus Drops"
+      max-level: 20
+      base-cost: 1000
+      cost-multiplier: 1.55
+      currency: FISHING
+      description: "Extra fish / catch."
+      effect: "+3% bonus drops per level"
+    token_chance:
+      name: "Token Chance"
+      max-level: 15
+      base-cost: 2000
+      cost-multiplier: 1.7
+      currency: FISHING
+      description: "Chance for bonus Sky Tokens."
+      effect: "+1% token chance per level"
+    xp_gain:
+      name: "XP Gain"
+      max-level: 20
+      base-cost: 800
+      cost-multiplier: 1.5
+      currency: FISHING
+      description: "More tool XP per action."
+      effect: "+3% tool XP per level"
+    auto_sell:
+      name: "Auto Sell"
+      max-level: 10
+      base-cost: 8000
+      cost-multiplier: 1.9
+      currency: FARMING
+      description: "Auto-sell harvested crops for money."
+      effect: "Sell tiers unlock per level"
+    crop_yield:
+      name: "Crop Yield"
+      max-level: 20
+      base-cost: 1000
+      cost-multiplier: 1.55
+      currency: FARMING
+      description: "More crop drops."
+      effect: "+4% crop yield per level"
+    harvest_speed:
+      name: "Harvest Speed"
+      max-level: 15
+      base-cost: 1200
+      cost-multiplier: 1.6
+      currency: FARMING
+      description: "Faster harvesting."
+      effect: "+2% harvest speed per level"
+    log_yield:
+      name: "Log Yield"
+      max-level: 20
+      base-cost: 1000
+      cost-multiplier: 1.55
+      currency: LOGGING
+      description: "More logs per tree."
+      effect: "+4% log yield per level"
+    tree_feller:
+      name: "Tree Feller"
+      max-level: 10
+      base-cost: 6000
+      cost-multiplier: 1.8
+      currency: LOGGING
+      description: "Chance to fell the whole tree."
+      effect: "+5% feller chance per level"
+    sapling_return:
+      name: "Sapling Return"
+      max-level: 12
+      base-cost: 1500
+      cost-multiplier: 1.6
+      currency: LOGGING
+      description: "Chance to return saplings."
+      effect: "+2% sapling return per level"
+    lifesteal:
+      name: "Lifesteal"
+      max-level: 15
+      base-cost: 2000
+      cost-multiplier: 1.7
+      currency: SLAYING
+      description: "Heal on kill."
+      effect: "+1 HP heal per level on kill"
+    loot_quality:
+      name: "Loot Quality"
+      max-level: 20
+      base-cost: 1500
+      cost-multiplier: 1.6
+      currency: SLAYING
+      description: "Better mob drops."
+      effect: "+3% loot quality per level"
+    mob_xp:
+      name: "Mob XP"
+      max-level: 20
+      base-cost: 1000
+      cost-multiplier: 1.55
+      currency: SLAYING
+      description: "More XP from kills."
+      effect: "+3% mob XP per level"
+    crit_chance:
+      name: "Crit Chance"
+      max-level: 15
+      base-cost: 2500
+      cost-multiplier: 1.7
+      currency: SLAYING
+      description: "Chance for critical hits."
+      effect: "+1% crit chance per level"
+
+  # How each upgrade level converts into a Stat bonus (read by the central ModifierEngine).
+  # stat = Stat enum name (lowercase); per-level = fraction added per upgrade level.
+  upgrade-effects:
+    efficiency: { stat: mining_speed, per-level: 0.05 }
+    fortune: { stat: mining_drops, per-level: 0.08 }
+    rare_ore_chance: { stat: mining_drops, per-level: 0.01 }
+    resource_chance: { stat: mining_drops, per-level: 0.01 }
+    generator_chance: { stat: mining_drops, per-level: 0.005 }
+    speed: { stat: fishing_speed, per-level: 0.02 }
+    bonus_drops: { stat: fishing_rewards, per-level: 0.03 }
+    token_chance: { stat: token_multiplier, per-level: 0.01 }
+    xp_gain: { stat: xp_multiplier, per-level: 0.03 }
+    auto_sell: { stat: economy_multiplier, per-level: 0.02 }
+    crop_yield: { stat: farming_yield, per-level: 0.04 }
+    harvest_speed: { stat: farming_speed, per-level: 0.02 }
+    log_yield: { stat: logging_yield, per-level: 0.04 }
+    tree_feller: { stat: logging_speed, per-level: 0.05 }
+    sapling_return: { stat: logging_yield, per-level: 0.02 }
+    lifesteal: { stat: mob_damage, per-level: 0.01 }
+    loot_quality: { stat: mob_drops, per-level: 0.03 }
+    mob_xp: { stat: xp_multiplier, per-level: 0.03 }
+    crit_chance: { stat: mob_damage, per-level: 0.01 }
+
+  # OmniTool PERKS — unlocked by TOOL LEVEL (separate from Role perks, which are Role-level).
+  # Each perk grants stat bonuses (percent) and/or an ability. Purely config-driven:
+  # add a new entry here and it shows up in the GUI + feeds the ModifierEngine. Code-driven
+  # perks can implement the Perk interface instead.
+  perks:
+    MINING:
+      haste:
+        name: "Haste"
+        unlock-level: 1
+        description: "+20% mining speed"
+        stats: { mining_speed: 0.20 }
+        hidden: false
+      fortune:
+        name: "Fortune"
+        unlock-level: 2
+        description: "+15% drop chance"
+        stats: { mining_drops: 0.15 }
+        hidden: false
+      prospector:
+        name: "Prospector"
+        unlock-level: 3
+        description: "+10% rare ore chance"
+        stats: { mining_drops: 0.10 }
+        hidden: false
+      veinminer:
+        name: "Veinminer"
+        unlock-level: 4
+        description: "+20% vein payout"
+        stats: { mining_speed: 0.15 }
+        hidden: false
+      token_finder:
+        name: "Token Finder"
+        unlock-level: 5
+        description: "+5% token chance"
+        stats: { token_multiplier: 0.05 }
+        hidden: false
+      gem_hunter:
+        name: "Gem Hunter"
+        unlock-level: 5
+        description: "+15% gem drops"
+        stats: { mining_drops: 0.15 }
+        hidden: false
+      ore_surge:
+        name: "Ore Surge"
+        unlock-level: 6
+        description: "+8% resource yield"
+        stats: { mining_speed: 0.08 }
+        hidden: false
+      deep_miner:
+        name: "Deep Miner"
+        unlock-level: 7
+        description: "+15% depth range"
+        stats: { mining_speed: 0.12 }
+        hidden: false
+      blast_mining:
+        name: "Blast Mining"
+        unlock-level: 8
+        description: "+12% blast range"
+        stats: { mining_drops: 0.10 }
+        hidden: false
+      lucky_miner:
+        name: "Lucky Miner"
+        unlock-level: 9
+        description: "+10% lucky drop chance"
+        stats: { mining_drops: 0.08 }
+        hidden: false
+      mining_xp:
+        name: "Mining XP"
+        unlock-level: 10
+        description: "+15% tool XP"
+        stats: { xp_multiplier: 0.15 }
+        hidden: false
+      overdrive:
+        name: "Overdrive"
+        unlock-level: 11
+        description: "+20% speed per level"
+        stats: { mining_speed: 0.20 }
+        hidden: false
+      jackpot:
+        name: "Jackpot"
+        unlock-level: 12
+        description: "+25% jackpot chance"
+        stats: { mining_drops: 0.25 }
+        hidden: false
+      magnet:
+        name: "Magnet"
+        unlock-level: 13
+        description: "+5% magnet range"
+        stats: { mining_speed: 0.05 }
+        hidden: false
+      double_ore:
+        name: "Double Ore"
+        unlock-level: 14
+        description: "+20% double drop chance"
+        stats: { mining_drops: 0.20 }
+        hidden: false
+
+    LOGGING:
+      lumberjack:
+        name: "Lumberjack"
+        unlock-level: 1
+        description: "+20% logging speed"
+        stats: { logging_speed: 0.20 }
+        hidden: false
+      timber:
+        name: "Timber"
+        unlock-level: 2
+        description: "+15% drop chance"
+        stats: { logging_drops: 0.15 }
+        hidden: false
+      fortune:
+        name: "Fortune"
+        unlock-level: 3
+        description: "+10% rare drop chance"
+        stats: { logging_drops: 0.10 }
+        hidden: false
+      woodcutter:
+        name: "Woodcutter"
+        unlock-level: 4
+        description: "+20% tree XP"
+        stats: { logging_speed: 0.15 }
+        hidden: false
+      sapling_surge:
+        name: "Sapling Surge"
+        unlock-level: 5
+        description: "+8% sapling chance"
+        stats: { logging_yield: 0.08 }
+        hidden: false
+      natures_bounty:
+        name: "Nature's Bounty"
+        unlock-level: 5
+        description: "+10% log yield"
+        stats: { logging_yield: 0.10 }
+        hidden: false
+      tree_hunter:
+        name: "Tree Hunter"
+        unlock-level: 6
+        description: "+12% tree XP"
+        stats: { logging_speed: 0.12 }
+        hidden: false
+      chop_xp:
+        name: "Chop XP"
+        unlock-level: 7
+        description: "+10% tool XP"
+        stats: { xp_multiplier: 0.10 }
+        hidden: false
+      token_catcher:
+        name: "Token Catcher"
+        unlock-level: 8
+        description: "+5% token chance"
+        stats: { token_multiplier: 0.05 }
+        hidden: false
+      double_chop:
+        name: "Double Chop"
+        unlock-level: 9
+        description: "+20% double drop chance"
+        stats: { logging_drops: 0.20 }
+        hidden: false
+      lucky_lumber:
+        name: "Lucky Lumber"
+        unlock-level: 10
+        description: "+10% lucky drop chance"
+        stats: { logging_drops: 0.08 }
+        hidden: false
+      overdrive:
+        name: "Overdrive"
+        unlock-level: 11
+        description: "+20% speed per level"
+        stats: { logging_speed: 0.20 }
+        hidden: false
+      ancient_wood:
+        name: "Ancient Wood"
+        unlock-level: 12
+        description: "+15% log yield"
+        stats: { logging_yield: 0.15 }
+        hidden: false
+      wood_surge:
+        name: "Wood Surge"
+        unlock-level: 13
+        description: "+8% resource yield"
+        stats: { logging_speed: 0.08 }
+        hidden: false
+      magnet:
+        name: "Magnet"
+        unlock-level: 14
+        description: "+5% magnet range"
+        stats: { logging_speed: 0.05 }
+        hidden: false
+
+    FISHING:
+      lure:
+        name: "Lure"
+        unlock-level: 1
+        description: "+15% bite chance"
+        stats: { fishing_speed: 0.15 }
+        hidden: false
+      luck_of_the_sea:
+        name: "Luck of the Sea"
+        unlock-level: 2
+        description: "+10% junk chance reduction"
+        stats: { fishing_rewards: 0.10 }
+        hidden: false
+      double_catch:
+        name: "Double Catch"
+        unlock-level: 3
+        description: "+20% double catch chance"
+        stats: { fishing_speed: 0.20 }
+        hidden: false
+      treasure_hunter:
+        name: "Treasure Hunter"
+        unlock-level: 4
+        description: "+10% treasure chance"
+        stats: { fishing_rewards: 0.10 }
+        hidden: false
+      token_catcher:
+        name: "Token Catcher"
+        unlock-level: 5
+        description: "+5% token chance"
+        stats: { token_multiplier: 0.05 }
+        hidden: false
+      coin_catcher:
+        name: "Coin Catcher"
+        unlock-level: 6
+        description: "+5% coin chance"
+        stats: { fishing_rewards: 0.05 }
+        hidden: false
+      rare_catch:
+        name: "Rare Catch"
+        unlock-level: 7
+        description: "+10% rare fish chance"
+        stats: { fishing_drops: 0.10 }
+        hidden: false
+      monster_catch:
+        name: "Monster Catch"
+        unlock-level: 8
+        description: "+15% monster fish chance"
+        stats: { fishing_drops: 0.15 }
+        hidden: false
+      fishing_xp:
+        name: "Fishing XP"
+        unlock-level: 9
+        description: "+15% tool XP"
+        stats: { xp_multiplier: 0.15 }
+        hidden: false
+      jackpot:
+        name: "Jackpot"
+        unlock-level: 10
+        description: "+25% jackpot chance"
+        stats: { fishing_drops: 0.25 }
+        hidden: false
+      golden_hook:
+        name: "Golden Hook"
+        unlock-level: 11
+        description: "+10% hook strength"
+        stats: { fishing_speed: 0.10 }
+        hidden: false
+      deep_sea:
+        name: "Deep Sea"
+        unlock-level: 12
+        description: "+12% depth range"
+        stats: { fishing_speed: 0.12 }
+        hidden: false
+      lucky_hook:
+        name: "Lucky Hook"
+        unlock-level: 13
+        description: "+10% lucky catch chance"
+        stats: { fishing_drops: 0.10 }
+        hidden: false
+      fishing_frenzy:
+        name: "Fishing Frenzy"
+        unlock-level: 14
+        description: "+20% catch rate"
+        stats: { fishing_speed: 0.20 }
+        hidden: false
+      treasure_surge:
+        name: "Treasure Surge"
+        unlock-level: 15
+        description: "+15% resource yield"
+        stats: { fishing_rewards: 0.15 }
+        hidden: false
+
+    FARMING:
+      replenish:
+        name: "Replenish"
+        unlock-level: 1
+        description: "+20% crop regen"
+        stats: { farming_yield: 0.20 }
+        hidden: false
+      harvest:
+        name: "Harvest"
+        unlock-level: 2
+        description: "+15% crop yield"
+        stats: { farming_yield: 0.15 }
+        hidden: false
+      fortune:
+        name: "Fortune"
+        unlock-level: 3
+        description: "+10% seed drop chance"
+        stats: { farming_drops: 0.10 }
+        hidden: false
+      double_harvest:
+        name: "Double Harvest"
+        unlock-level: 4
+        description: "+20% double harvest chance"
+        stats: { farming_yield: 0.20 }
+        hidden: false
+      token_harvester:
+        name: "Token Harvester"
+        unlock-level: 5
+        description: "+5% token chance"
+        stats: { token_multiplier: 0.05 }
+        hidden: false
+      farmers_luck:
+        name: "Farmer's Luck"
+        unlock-level: 6
+        description: "+10% crop luck"
+        stats: { farming_yield: 0.10 }
+        hidden: false
+      golden_harvest:
+        name: "Golden Harvest"
+        unlock-level: 7
+        description: "+15% crop yield"
+        stats: { farming_yield: 0.15 }
+        hidden: false
+      growth_boost:
+        name: "Growth Boost"
+        unlock-level: 8
+        description: "+15% grow speed"
+        stats: { farming_speed: 0.15 }
+        hidden: false
+      crop_xp:
+        name: "Crop XP"
+        unlock-level: 9
+        description: "+10% tool XP"
+        stats: { xp_multiplier: 0.10 }
+        hidden: false
+      harvest_frenzy:
+        name: "Harvest Frenzy"
+        unlock-level: 10
+        description: "+20% harvest speed"
+        stats: { farming_speed: 0.20 }
+        hidden: false
+      jackpot:
+        name: "Jackpot"
+        unlock-level: 11
+        description: "+25% crop jackpot chance"
+        stats: { farming_drops: 0.25 }
+        hidden: false
+      seed_saver:
+        name: "Seed Saver"
+        unlock-level: 12
+        description: "+10% seed retention"
+        stats: { farming_drops: 0.10 }
+        hidden: false
+      mega_harvest:
+        name: "Mega Harvest"
+        unlock-level: 13
+        description: "+30% crop yield"
+        stats: { farming_yield: 0.30 }
+        hidden: false
+      bountiful:
+        name: "Bountiful"
+        unlock-level: 14
+        description: "+20% extra drops"
+        stats: { farming_yield: 0.20 }
+        hidden: false
+      overdrive:
+        name: "Overdrive"
+        unlock-level: 15
+        description: "+20% speed per level"
+        stats: { farming_speed: 0.20 }
+        hidden: false
+
+    SLAYING:
+      sharpness:
+        name: "Sharpness"
+        unlock-level: 1
+        description: "+10% mob damage"
+        stats: { mob_damage: 0.10 }
+        hidden: false
+      slayers_luck:
+        name: "Slayer's Luck"
+        unlock-level: 2
+        description: "+5% mob drop chance"
+        stats: { mob_drops: 0.05 }
+        hidden: false
+      executioner:
+        name: "Executioner"
+        unlock-level: 3
+        description: "+15% damage to low HP mobs"
+        stats: { mob_damage: 0.15 }
+        hidden: false
+      combo:
+        name: "Combo"
+        unlock-level: 4
+        description: "+5% damage per hit stack"
+        stats: { mob_damage: 0.05 }
+        hidden: false
+      bloodlust:
+        name: "Bloodlust"
+        unlock-level: 5
+        description: "+HP on kill"
+        stats: { mob_damage: 0.02 }
+        hidden: false
+      double_kill:
+        name: "Double Kill"
+        unlock-level: 6
+        description: "+20% damage after double kill"
+        stats: { mob_damage: 0.20 }
+        hidden: false
+      slayer_xp:
+        name: "Slayer XP"
+        unlock-level: 7
+        description: "+15% XP from kills"
+        stats: { xp_multiplier: 0.15 }
+        hidden: false
+      token_hunter:
+        name: "Token Hunter"
+        unlock-level: 8
+        description: "+5% token chance"
+        stats: { token_multiplier: 0.05 }
+        hidden: false
+      coin_hunter:
+        name: "Coin Hunter"
+        unlock-level: 9
+        description: "+5% coin chance"
+        stats: { mob_drops: 0.05 }
+        hidden: false
+      mob_mastery:
+        name: "Mob Mastery"
+        unlock-level: 10
+        description: "+10% mob XP"
+        stats: { xp_multiplier: 0.10 }
+        hidden: false
+      critical:
+        name: "Critical"
+        unlock-level: 11
+        description: "+5% critical hit chance"
+        stats: { mob_damage: 0.05 }
+        hidden: false
+      rampage:
+        name: "Rampage"
+        unlock-level: 12
+        description: "+5% damage per consecutive kill"
+        stats: { mob_damage: 0.05 }
+        hidden: false
+      soul_collector:
+        name: "Soul Collector"
+        unlock-level: 13
+        description: "+HP on mob death"
+        stats: { mob_damage: 0.02 }
+        hidden: false
+      bounty_hunter:
+        name: "Bounty Hunter"
+        unlock-level: 14
+        description: "+5% bounty drop chance"
+        stats: { mob_drops: 0.05 }
+        hidden: false
+      berserker:
+        name: "Berserker"
+        unlock-level: 15
+        description: "+15% damage when below 30% HP"
+        stats: { mob_damage: 0.15 }
+        hidden: false
+
+    UNIVERSAL:
+      omni_ward:
+        name: "Omni Ward"
+        unlock-level: 5
+        description: "+5% universal stat boost"
+        stats: { universal_speed: 0.05 }
+        hidden: false
+      omnipotent:
+        name: "Omnipotent"
+        unlock-level: 10
+        description: "+10% universal efficiency"
+        stats: { universal_yield: 0.10 }
+        hidden: false
+      omnikinetic:
+        name: "Omnikinetic"
+        unlock-level: 20
+        description: "+15% universal XP"
+        stats: { xp_multiplier: 0.15 }
+        hidden: false
+      omni_flux:
+        name: "Omni Flux"
+        unlock-level: 30
+        description: "Unlocks the Omni Flux ability"
+        ability: omni_flux
+        hidden: false
+      transcendant:
+        name: "Transcendant"
+        unlock-level: 40
+        description: "+25% all stats"
+        stats: { universal_speed: 0.10, universal_yield: 0.10, xp_multiplier: 0.10 }
+        hidden: false
+      omega:
+        name: "Omega"
+        unlock-level: 50
+        description: "Master of all roles"
+        stats: { universal_speed: 0.25, universal_yield: 0.20, xp_multiplier: 0.15 }
+        hidden: false
+
+  # OmniTool ABILITIES — active, triggered from the GUI / /tools ability. Unlocked by TOOL LEVEL.
+  # effect = which behaviour runs (handled centrally by AbilityManager). All numbers configurable.
+  abilities:
+    MINING:
+      area_mine:
+        name: "Area Mine"
+        unlock-level: 30
+        cooldown-seconds: 90
+        duration-seconds: 8
+        description: "Mine a 3x3x3 area of ore around you."
+        effect: area_mine
+        radius: 1
+    FARMING:
+      area_harvest:
+        name: "Area Harvest"
+        unlock-level: 30
+        cooldown-seconds: 90
+        duration-seconds: 8
+        description: "Harvest a 3x3x3 area of crops around you."
+        effect: area_harvest
+        radius: 1
+    LOGGING:
+      tree_harvest:
+        name: "Tree Harvest"
+        unlock-level: 30
+        cooldown-seconds: 90
+        duration-seconds: 8
+        description: "Chop a 3x3x3 area of logs around you."
+        effect: area_harvest
+        radius: 1

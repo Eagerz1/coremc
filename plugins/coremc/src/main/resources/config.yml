@@ -1,0 +1,17 @@
+# ===========================================================================
+# core-store configuration
+# ===========================================================================
+
+announce:
+  enabled: true
+  # {player} and {product} are substituted.
+  format: "<player> has purchased <product> — congratulations!"
+
+# Currency label shown next to prices and in the credits system.
+currency: "Credits"
+
+# Per-product permission template. {id} is the product id. Buyers without it see the
+# item locked in the GUI. Set to "" to disable gating (everyone can buy).
+buy-permission: "core.store.buy.{id}"
+
+# Product catalogues live in keys.yml / bundles.yml / ranks.yml.

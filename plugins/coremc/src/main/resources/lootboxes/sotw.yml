@@ -1,0 +1,338 @@
+# ===========================================================================
+# CoreMC — SOTW LOOTBOX  (Start Of The World)
+# ===========================================================================
+# Theme: Start of the World / New Season.
+# Celebrates the launch of a new CoreMC SkyBlock season — day-one players,
+# fresh economy, new islands, exploration, competition, becoming established.
+# Do NOT treat as "Server of the Week".
+# Loaded by LootboxManager from lootboxes/sotw.yml. No Java changes needed.
+# ===========================================================================
+
+display:
+  name: "SOTW LOOTBOX"
+  description: "Start of the World — Season rewards."
+  icon-material: NETHER_STAR
+  icon-colour: gold
+  theme: "sotw"
+  custom-model-data: ""
+
+# Empty = available to everyone (no permission node required to open).
+permission: ""
+
+sounds:
+  open: "ENTITY_ENDER_CHEST_OPEN"
+  spin-start: "ENTITY_ITEM_PICKUP"
+  spin-loop: "BLOCK_AMBIENT_CRIMSON_FOREST_LOOP"
+  reveal: "UI_TOAST_CHALLENGE_COMPLETE"
+  legendary: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  mythic: "ENTITY_ENDER_DRAGON_DEATH"
+  lightning: "ENTITY_LIGHTNING_BOLT_THUNDER"
+
+particles:
+  type: "PORTAL"
+  colour: "#ffd700"
+
+animation:
+  rise-ticks: 50
+  spin-ticks: 140
+  reward-appear-delay-ticks: 10
+  reward-appear-interval-ticks: 4
+  spin-slowdown-ticks: 50
+  reveal-pause-ticks: 30
+  rise-height: 2.2
+  particle-type: "PORTAL"
+  particle-colour: "#ffd700"
+  sound-open: "ENTITY_ENDER_CHEST_OPEN"
+  sound-spin-start: "ENTITY_ITEM_PICKUP"
+  sound-spin-loop: "BLOCK_AMBIENT_CRIMSON_FOREST_LOOP"
+  sound-reveal: "UI_TOAST_CHALLENGE_COMPLETE"
+  sound-legendary: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  sound-mythic: "ENTITY_ENDER_DRAGON_DEATH"
+  lightning-enabled: true
+  lightning-strikes: 3
+  lightning-sound: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  screen-shake: true
+  play-sounds: true
+  stagger-delay-ticks: 1
+
+rewards:
+  # ---------------------------------------------------------------- COMMON
+  sotw_credits_1000:
+    type: credits
+    amount: 1000
+    rarity: COMMON
+    chance: 20.0
+    display: "1,000 Credits"
+    description: "CoreMC store credit."
+    announce: false
+    rarity-colour: "white"
+  sotw_tokens_250:
+    type: tokens
+    amount: 250
+    rarity: COMMON
+    chance: 20.0
+    display: "250 SkyTokens"
+    description: "Progression currency."
+    announce: false
+    rarity-colour: "white"
+  sotw_key_1:
+    type: key
+    key: vote
+    amount: 1
+    rarity: COMMON
+    chance: 18.0
+    display: "1x Crate Key"
+    description: "A standard Vote Key."
+    announce: false
+    rarity-colour: "white"
+
+  # -------------------------------------------------------------- UNCOMMON
+  sotw_credits_2500:
+    type: credits
+    amount: 2500
+    rarity: UNCOMMON
+    chance: 12.0
+    display: "2,500 Credits"
+    description: "CoreMC store credit."
+    announce: false
+    rarity-colour: "yellow"
+  sotw_tokens_500:
+    type: tokens
+    amount: 500
+    rarity: UNCOMMON
+    chance: 11.0
+    display: "500 SkyTokens"
+    description: "Progression currency."
+    announce: false
+    rarity-colour: "yellow"
+  sotw_key_3:
+    type: key
+    key: river
+    amount: 3
+    rarity: UNCOMMON
+    chance: 9.0
+    display: "3x Crate Keys"
+    description: "River Keys."
+    announce: false
+    rarity-colour: "yellow"
+
+  # ------------------------------------------------------------------ RARE
+  sotw_credits_5000:
+    type: credits
+    amount: 5000
+    rarity: RARE
+    chance: 6.0
+    display: "5,000 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "aqua"
+  sotw_tokens_1000:
+    type: tokens
+    amount: 1000
+    rarity: RARE
+    chance: 6.0
+    display: "1,000 SkyTokens"
+    description: "Progression currency."
+    announce: true
+    rarity-colour: "aqua"
+  sotw_skin_season_starter:
+    type: skin
+    skin: season_starter
+    rarity: RARE
+    chance: 3.0
+    display: "Season Starter Skin"
+    description: "Day-one starter skin."
+    announce: true
+    rarity-colour: "aqua"
+  sotw_tag_sotw:
+    type: tag
+    tag: SOTW
+    rarity: RARE
+    chance: 3.0
+    display: "SOTW Tag"
+    description: "Chat tag: [SOTW]"
+    announce: true
+    rarity-colour: "aqua"
+  sotw_gradient_sotw_gold:
+    type: gradient
+    gradient: sotw_gold
+    rarity: RARE
+    chance: 3.0
+    display: "SOTW Gold Gradient"
+    description: "Chat gradient: SOTW Gold."
+    announce: true
+    rarity-colour: "aqua"
+
+  # ------------------------------------------------------------------ EPIC
+  sotw_credits_10000:
+    type: credits
+    amount: 10000
+    rarity: EPIC
+    chance: 2.5
+    display: "10,000 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "light_purple"
+  sotw_tokens_2500:
+    type: tokens
+    amount: 2500
+    rarity: EPIC
+    chance: 2.5
+    display: "2,500 SkyTokens"
+    description: "Progression currency."
+    announce: true
+    rarity-colour: "light_purple"
+  sotw_skin_skyblock_champion:
+    type: skin
+    skin: skyblock_champion
+    rarity: EPIC
+    chance: 1.5
+    display: "SkyBlock Champion Skin"
+    description: "For the season's top competitor."
+    announce: true
+    rarity-colour: "light_purple"
+  sotw_tag_day_one:
+    type: tag
+    tag: DAY_ONE
+    rarity: EPIC
+    chance: 1.5
+    display: "DAY ONE Tag"
+    description: "Chat tag: [DAY ONE]"
+    announce: true
+    rarity-colour: "light_purple"
+  sotw_gradient_season_purple:
+    type: gradient
+    gradient: season_purple
+    rarity: EPIC
+    chance: 1.5
+    display: "Season Purple Gradient"
+    description: "Chat gradient: Season Purple."
+    announce: true
+    rarity-colour: "light_purple"
+  sotw_companion_mini_skyblocker:
+    type: companion
+    companion: mini_skyblocker
+    rarity: EPIC
+    chance: 1.0
+    display: "Mini Skyblocker"
+    description: "A tiny island companion."
+    announce: true
+    rarity-colour: "light_purple"
+  sotw_companion_season_dragon:
+    type: companion
+    companion: season_dragon
+    rarity: EPIC
+    chance: 1.0
+    display: "Season Dragon"
+    description: "A dragon of the new season."
+    announce: true
+    rarity-colour: "light_purple"
+  sotw_bundle_keys_credits:
+    type: bundle
+    rarity: EPIC
+    chance: 2.0
+    display: "Key & Credit Bundle"
+    description: "3x Crate Keys + 500 Credits."
+    announce: true
+    rarity-colour: "light_purple"
+    bundle:
+      - type: key
+        key: sky
+        amount: 3
+      - type: credits
+        amount: 500
+
+  # -------------------------------------------------------------- LEGENDARY
+  sotw_credits_25000:
+    type: credits
+    amount: 25000
+    rarity: LEGENDARY
+    chance: 0.6
+    display: "25,000 Credits"
+    description: "CoreMC store credit."
+    announce: true
+    rarity-colour: "gold"
+  sotw_key_10:
+    type: key
+    key: sky
+    amount: 10
+    rarity: LEGENDARY
+    chance: 0.6
+    display: "10x Crate Keys"
+    description: "Ten Sky Keys."
+    announce: true
+    rarity-colour: "gold"
+  sotw_skin_sotw_king:
+    type: skin
+    skin: sotw_king
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "SOTW King Skin"
+    description: "For the king of the new world."
+    announce: true
+    rarity-colour: "gold"
+  sotw_tag_pioneer:
+    type: tag
+    tag: PIONEER
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "PIONEER Tag"
+    description: "Chat tag: [PIONEER]"
+    announce: true
+    rarity-colour: "gold"
+  sotw_gradient_new_dawn:
+    type: gradient
+    gradient: new_dawn
+    rarity: LEGENDARY
+    chance: 0.4
+    display: "New Dawn Gradient"
+    description: "Chat gradient: New Dawn."
+    announce: true
+    rarity-colour: "gold"
+  sotw_companion_floating_island:
+    type: companion
+    companion: floating_island
+    rarity: LEGENDARY
+    chance: 0.3
+    display: "Floating Island"
+    description: "A companion island that follows you."
+    announce: true
+    rarity-colour: "gold"
+
+  # ----------------------------------------------------------------- MYTHIC
+  sotw_skin_exclusive:
+    type: skin
+    skin: sotw_exclusive
+    rarity: MYTHIC
+    chance: 0.08
+    display: "Exclusive SOTW Skin"
+    description: "Only obtainable from the SOTW Lootbox."
+    announce: true
+    rarity-colour: "ff55ff"
+  sotw_tag_exclusive:
+    type: tag
+    tag: FIRST
+    rarity: MYTHIC
+    chance: 0.08
+    display: "SOTW Mythic Tag"
+    description: "Chat tag: [FIRST] — first of the world."
+    announce: true
+    rarity-colour: "ff55ff"
+  sotw_gradient_exclusive:
+    type: gradient
+    gradient: sky_blue
+    rarity: MYTHIC
+    chance: 0.08
+    display: "Exclusive SOTW Gradient"
+    description: "Sky Blue — SOTW-only gradient."
+    announce: true
+    rarity-colour: "ff55ff"
+  sotw_companion_exclusive:
+    type: companion
+    companion: sotw_companion
+    rarity: MYTHIC
+    chance: 0.06
+    display: "SOTW Companion"
+    description: "The season's signature companion."
+    announce: true
+    rarity-colour: "ff55ff"

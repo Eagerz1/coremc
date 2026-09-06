@@ -1,0 +1,230 @@
+name: CoreMC
+version: 1.0.0
+main: net.coremc.coremc.CoreMC
+api-version: "1.21"
+author: CoreMC
+description: Consolidated CoreMC plugin (foundation, skyblock, ban, staff).
+softdepend: [Vault, PlaceholderAPI, LuckPerms]
+
+commands:
+  is:
+    description: CoreMC SkyBlock island command.
+    usage: /is
+    aliases: [island]
+  role:
+    description: Select a SkyBlock progression role.
+    usage: /role
+  roles:
+    description: View and select your progression roles and perks.
+    usage: /roles
+  upgrades:
+    description: Island upgrade tree.
+    usage: /upgrades
+  buffs:
+    description: Island-wide buffs.
+    usage: /buffs
+  skytokens:
+    description: View or manage your Sky Token balance.
+    usage: /skytokens [player|add|remove|set|history]
+    aliases: [st]
+  gens:
+    description: Buy and place generators.
+    usage: /gens
+  spawners:
+    description: Buy and place mob spawners.
+    usage: /spawners
+  tools:
+    description: Open the Omnitools GUI.
+    usage: /tools
+  ban:
+    description: Issue a tiered ban.
+    usage: /ban <player> <tier> <reason>
+  mute:
+    description: Issue a tiered mute.
+    usage: /mute <player> <tier> <reason>
+  warn:
+    description: Issue a tiered warning.
+    usage: /warn <player> <tier> <reason>
+  kick:
+    description: Kick a player.
+    usage: /kick <player> <reason>
+  unban:
+    description: Remove a ban.
+    usage: /unban <player>
+  unmute:
+    description: Remove a mute.
+    usage: /unmute <player>
+  history:
+    description: View punishment history.
+    usage: /history <player>
+  note:
+    description: Staff-only player notes (add or remove).
+    usage: /note <add|remove> <player> <note|noteID>
+  notes:
+    description: List staff notes for a player.
+    usage: /notes <player>
+  invsee:
+    description: View another player's inventory.
+    usage: /invsee <player>
+  rotate:
+    description: Rotate a player's view.
+    usage: /rotate <player>
+  cps:
+    description: Show a player's CPS.
+    usage: /cps <player>
+  vanish:
+    description: Toggle staff vanish.
+    usage: /vanish
+  spectate:
+    description: Spectate a player (or toggle off to stop).
+    usage: /spectate [player]
+  freeze:
+    description: Freeze a player in place.
+    usage: /freeze <player>
+  captcha:
+    description: Open a captcha check to a player.
+    usage: /captcha <player>
+  crate:
+    description: CoreMC crate / key / lootbox system.
+    usage: /crate [gui|give|reload]
+    aliases: [crates, lootbox, key]
+
+  missions:
+    description: CoreMC island / player missions.
+    usage: /missions [claim <id>]
+    aliases: [mission]
+  sets:
+    description: Open the CoreMC progression armour sets GUI.
+    usage: /sets
+  companion:
+    description: Open the CoreMC companion progression GUI.
+    usage: /companion [merge|equip|unequip|give]
+  playerdata:
+    description: Persistent player data admin (info / save / reload / backup).
+    usage: /playerdata [<player>|save <player>|reload <player>|backup]
+    aliases: [pdata]
+
+  events:
+    description: View the current live event, time left, and the active multiplier.
+    usage: /events
+    aliases: [event]
+  event:
+    description: Manage live events (admin).
+    usage: /event [current|next|start <id>|stop|reload]
+    aliases: [events]
+
+permissions:
+  coremc.events.admin:
+    description: Manage live events (start/stop/reload).
+    default: op
+  coreban.*:
+    description: Full coreban access.
+    default: op
+  coreban.ban.t1:
+    description: Ban tier 1.
+    default: op
+  coreban.ban.t2:
+    description: Ban tier 2.
+    default: op
+  coreban.ban.t3:
+    description: Ban tier 3.
+    default: op
+  coreban.ban.t4:
+    description: Ban tier 4.
+    default: op
+  coreban.ban.t5:
+    description: Ban tier 5.
+    default: op
+  coreban.mute.t1:
+    description: Mute tier 1.
+    default: op
+  coreban.mute.t2:
+    description: Mute tier 2.
+    default: op
+  coreban.mute.t3:
+    description: Mute tier 3.
+    default: op
+  coreban.mute.t4:
+    description: Mute tier 4.
+    default: op
+  coreban.mute.t5:
+    description: Mute tier 5.
+    default: op
+  coreban.warn.t1:
+    description: Warn tier 1.
+    default: op
+  coreban.warn.t2:
+    description: Warn tier 2.
+    default: op
+  coreban.warn.t3:
+    description: Warn tier 3.
+    default: op
+  coreban.warn.t4:
+    description: Warn tier 4.
+    default: op
+  coreban.warn.t5:
+    description: Warn tier 5.
+    default: op
+  coreban.kick:
+    description: Kick players.
+    default: op
+  coreban.unban:
+    description: Unban players.
+    default: op
+  coreban.unmute:
+    description: Unmute players.
+    default: op
+  coreban.history:
+    description: View punishment history.
+    default: op
+  coreban.notes:
+    description: Access staff player notes (view + manage).
+    default: op
+  coreban.notes.add:
+    description: Add staff notes to a player.
+    default: op
+  coreban.notes.remove:
+    description: Remove staff notes from a player.
+    default: op
+  core.skytokens.admin:
+    description: Manage other players' Sky Tokens.
+    default: op
+  corestaff.*:
+    description: Full corestaff access.
+    default: op
+  corestaff.invsee:
+    description: Use /invsee.
+    default: op
+  corestaff.rotate:
+    description: Use /rotate.
+    default: op
+  corestaff.cps:
+    description: Use /cps.
+    default: op
+  corestaff.vanish:
+    description: Use /vanish.
+    default: op
+  corestaff.spectate:
+    description: Use /spectate.
+    default: op
+  corestaff.freeze:
+    description: Use /freeze.
+    default: op
+  corestaff.captcha:
+    description: Use /captcha.
+    default: op
+  core.crates.admin:
+    description: Manage crates/keys/lootboxes (give, reload).
+    default: op
+  core.companions.admin:
+    description: Grant companions to players.
+    default: op
+  skyblock.reset:
+    description: Allow /is reset (full island wipe + recreate).
+    default: op
+  skyblock.delete:
+    description: Allow /is delete (permanently delete an island).
+    default: op
+  core.playerdata:
+    description: Full access to /playerdata (info on anyone, save, reload, backup).
+    default: op

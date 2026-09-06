@@ -1,0 +1,43 @@
+name: core-store
+version: 1.0.0
+main: net.coremc.store.CoreStore
+api-version: "1.21"
+author: CoreMC
+description: CoreMC in-game store, keys, bundles, ranks, credits and crate API.
+depend: [CoreMC]
+softdepend: [Vault, core-tags]
+
+commands:
+  store:
+    description: Open the CoreMC store.
+    usage: /store
+    aliases: [shop]
+  credits:
+    description: View or manage your Credits balance.
+    usage: /credits [player|add|remove|set|history]
+  storeclaim:
+    description: Claim undelivered store rewards.
+    usage: /store claim
+
+permissions:
+  core.store.open:
+    description: Open the store.
+    default: true
+  core.store.admin:
+    description: Administrative test/grant commands.
+    default: op
+  core.store.credits:
+    description: View own credits.
+    default: true
+  core.store.credits.admin:
+    description: Manage other players' credits.
+    default: op
+  core.store.announce.keys:
+    description: Whether key purchases announce.
+    default: true
+  core.store.announce.bundles:
+    description: Whether bundle purchases announce.
+    default: true
+  core.store.announce.ranks:
+    description: Whether rank purchases announce.
+    default: true

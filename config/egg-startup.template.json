@@ -1,0 +1,1 @@
+{"egg":"coremc","startup":"java -Xms2G -Xmx4G -jar coremc.jar nogui","environment":"JAVA_17","install_command":"echo coremc installed"}
