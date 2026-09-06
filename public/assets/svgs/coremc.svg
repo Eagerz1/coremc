@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" role="img" aria-label="CoreMC">
+  <defs>
+    <linearGradient id="cubeTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6ee7b7"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="cubeLeft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#059669"/>
+      <stop offset="1" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="cubeRight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#065f46"/>
+      <stop offset="1" stop-color="#064e3b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Core "cube" block -->
+  <g transform="translate(120 40)">
+    <!-- top face -->
+    <polygon points="0,0 90,-52 180,0 90,52" fill="url(#cubeTop)"/>
+    <!-- left face -->
+    <polygon points="0,0 90,52 90,172 0,120" fill="url(#cubeLeft)"/>
+    <!-- right face -->
+    <polygon points="90,52 180,0 180,120 90,172" fill="url(#cubeRight)"/>
+    <!-- subtle inner core highlight -->
+    <polygon points="45,-26 90,-52 135,-26 90,0" fill="#d1fae5" opacity="0.35"/>
+    <circle cx="90" cy="60" r="26" fill="#f0fdf4" opacity="0.9"/>
+    <circle cx="90" cy="60" r="12" fill="#022c22" opacity="0.85"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="340" y="210" font-family="'IBM Plex Sans','Roboto','Segoe UI',system-ui,sans-serif" font-size="150" font-weight="800" letter-spacing="-4" fill="#e5e7eb">
+    Core<tspan fill="#34d399">MC</tspan>
+  </text>
+  <text x="344" y="268" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif" font-size="42" font-weight="600" letter-spacing="8" fill="#6b7280">
+    GAME SERVER PANEL
+  </text>
+</svg>
